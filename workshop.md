@@ -86,3 +86,17 @@ There are no specific skills needed for this workshop beyond a basic comfort wit
 ### Setting up your computer
 Setting up a consistent test environment can be a time consuming task, but thankfully with use of Vagrant this is a very easy task. Benefits of Vagrant are the consistent workflow and the easiness of environment lifecycle, like disposal.
 The [installation](https://www.vagrantup.com/docs/installation/) and [getting started guide](https://www.vagrantup.com/docs/getting-started/) has detailed instructions for setting up Vagrant on Mac, Linux and Windows.
+
+<a id="first"></a>
+## 1.0 Installing and initial configuration of the first components
+
+Now that you have everything setup, it's time to get our hands dirty. In this first section you will install and setup all first used tools. For this some configuration templates be helpful, which are part of the [DOD-AMS-Workshop](https://github.com/avwsolutions/DOD-AMS-Workshop) repository.
+
+> Note : Be aware that for this task internet connectivity is needed. For convenience
+To get started type the following command in your terminal
+```
+$ sudo su -
+$ cd /usr/local/src
+$ git clone https://github.com/avwsolutions/DOD-AMS-Workshop
+```
+
