@@ -328,3 +328,35 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 ```
 
+Next steps are running the setup script for installing carbon.
+
+```
+$ sudo su -
+$ cd /usr/local/src/carbon/
+$ python setup.py install
+```
+Now repeat these steps for graphite-web.
+
+```
+$ sudo su -
+$ cd /usr/local/src/graphite-web/
+$ python setup.py install
+```
+
+Now copy over all template configurations (graphite-web and carbon-*) and setup the service startup files.
+
+```
+$ sudo cp /opt/graphite/conf/carbon.conf.example /opt/graphite/conf/carbon.conf
+$ sudo cp /opt/graphite/conf/storage-schemas.conf.example /opt/graphite/conf/storage-schemas.conf
+$ sudo cp /opt/graphite/conf/storage-aggregation.conf.example /opt/graphite/conf/storage-aggregation.conf
+$ sudo cp /opt/graphite/conf/relay-rules.conf.example /opt/graphite/conf/relay-rules.conf
+$ sudo cp /opt/graphite/webapp/graphite/local_settings.py.example /opt/graphite/webapp/graphite/local_settings.py
+$ sudo cp /opt/graphite/conf/graphite.wsgi.example /opt/graphite/conf/graphite.wsgi
+$ sudo cp /opt/graphite/examples/example-graphite-vhost.conf /etc/httpd/conf.d/graphite.conf
+
+# Copy over service startup scripts and make them executable
+ 
+$ sudo cp /usr/local/src/carbon/distro/redhat/init.d/carbon-* /etc/init.d/
+$ sudo chmod +x /etc/init.d/carbon-*
+
+```
