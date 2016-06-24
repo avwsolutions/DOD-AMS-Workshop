@@ -159,3 +159,51 @@ $ cd /usr/local/src
 $ git clone https://github.com/avwsolutions/DOD-AMS-Workshop
 ```
 
+<a id="elasticsearch"></a>
+## 1.1 Install & configure Elasticsearch
+
+> Note : Elastic recommends using Oracle Java over OpenJDK. In this workshop we will use OpenJDK which also is supported.
+
+Below the commands for installing the openJDK JRE and checking if the path & version (1.7 or greater) are correct. 
+
+```
+$ sudo yum -y install jre
+$ sudo java -version
+openjdk version "1.8.0_91"
+OpenJDK Runtime Environment (build 1.8.0_91-b14)
+OpenJDK 64-Bit Server VM (build 25.91-b14, mixed mode)
+```
+
+> Note : Be aware that for this task internet connectivity is needed. For convenience the Elastic repository is configured and there is already a cache yum download available.
+
+Below the commands for installing elasticsearch. 
+
+```
+$ sudo yum -y install elasticsearch
+```
+
+Now we will configure the elasticsearch instance to only accept local port access. Be aware of this when connecting from your Computer.
+
+```
+$ sudo vi /etc/elasticsearch/elasticsearch.yml
+```
+
+Add the bold line
+
+```
+# Set the bind address to a specific IP (IPv4 or IPv6):
+#
+# network.host: 192.168.0.1
+**network.host: localhost**
+#
+# Set a custom port for HTTP:
+#
+# http.port: 9200
+```
+At last we can configure the service configuration and start the service. Notice it is using systemd
+
+```
+sudo systemctl daemon-reload
+sudo systemctl enable elasticsearch.service
+sudo systemctl start elasticsearch.service
+```
