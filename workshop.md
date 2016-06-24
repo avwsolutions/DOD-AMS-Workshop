@@ -226,7 +226,7 @@ sudo systemctl start elasticsearch.service
 ```
 
 <a id="logstash"></a>
-## 1.1 Install & configure Logstash 
+## 1.2 Install & configure Logstash 
 
 > Note : Be aware that for this task internet connectivity is needed. For convenience the Elastic repository is configured and there is already a cache yum download available.
 
@@ -243,3 +243,37 @@ sudo systemctl daemon-reload
 sudo systemctl enable logstash.service
 ```
 
+<a id="kibana"></a>
+## 1.3 Install & configure Kibana
+
+> Note : Be aware that for this task internet connectivity is needed. For convenience the Elastic repository is configured and there is already a cache yum download available.
+
+Below the commands for installing kibana.
+
+```
+$ sudo yum -y install kibana 
+```
+Since we run a local firewall we need to enable access to the port
+
+```
+$ sudo su -
+$ cd /usr/lib/firewalld/services
+$ vi kibana.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Kibana</short>  <description>Kibana Appl server, which is based on http traffic.</description>
+  <port protocol="tcp" port="5601"/>
+</service>
+
+$ firewall-cmd --permanent --add-service kibana 
+$ firewall-cmd --reload
+```
+
+At last we can configure the service configuration. Notice it is not using systemd.
+
+```
+sudo systemctl daemon-reload
+sudo systemctl enable kibana.service
+sudo systemctl start kibana.service
+```
