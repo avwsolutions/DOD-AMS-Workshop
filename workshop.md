@@ -300,6 +300,31 @@ $ cd /usr/local/src
 $ git clone https://github.com/graphite-project/graphite-web.git
 $ git clone https://github.com/graphite-project/carbon.git
 ```
+Now that we have the sources we are ready to install the binaries. This is done through the `pip` command. Since there are some changes in Django 1.9.x release, it is mandatory to first update the requirements.txt input file.
 
+```
+$ sudo su -
+$ vi /usr/local/src/graphite-web/requirements.txt
 
+# old value => Django>=1.4
+Django==1.8
+```
+Now start the `pip` installer.
+
+```
+$ sudo su -
+$ pip install -r /usr/local/src/graphite-web/requirements.txt
+
+#verify if Django has the right version
+
+$ python
+Python 2.7.5 (default, Nov 20 2015, 02:00:19) 
+[GCC 4.8.5 20150623 (Red Hat 4.8.5-4)] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import django
+>>> django.VERSION
+(1, 8, 0, 'final', 0)
+>>> quit()
+
+```
 
