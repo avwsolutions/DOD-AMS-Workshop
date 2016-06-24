@@ -188,7 +188,7 @@ Now we will configure the elasticsearch instance to only accept local port acces
 $ sudo vi /etc/elasticsearch/elasticsearch.yml
 ```
 
-Add the bold line
+Add the uncommented line to the YML file.
 
 ```
 # Set the bind address to a specific IP (IPv4 or IPv6):
@@ -200,6 +200,23 @@ Add the bold line
 #
 # http.port: 9200
 ```
+Since we run a local firewall we need to enable access to the port
+
+```
+$ sudo su -
+$ cd /usr/lib/firewalld/services
+$ vi elasticsearch.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Elasticsearch</short>  <description>Elasticsearch server REST API, which is based on http traffic.</description>
+  <port protocol="tcp" port="9200"/>
+</service>
+
+$ firewall-cmd --permanent --add-service elasticsearch
+$ firewall-cmd --reload
+```
+
 At last we can configure the service configuration and start the service. Notice it is using systemd
 
 ```
