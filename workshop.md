@@ -87,6 +87,63 @@ There are no specific skills needed for this workshop beyond a basic comfort wit
 Setting up a consistent test environment can be a time consuming task, but thankfully with use of Vagrant this is a very easy task. Benefits of Vagrant are the consistent workflow and the easiness of environment lifecycle, like disposal.
 The [installation](https://www.vagrantup.com/docs/installation/) and [getting started guide](https://www.vagrantup.com/docs/getting-started/) has detailed instructions for setting up Vagrant on Mac, Linux and Windows.
 
+To spin off the VM go to the directory where you saved the .box & Vagrantfile and run the following commands
+
+```
+$vagrant up
+Bringing machine 'datalake' up with 'virtualbox' provider...
+==> datalake: Importing base box 'DOD-AMS-WORKSHOP'...
+==> datalake: Matching MAC address for NAT networking...
+==> datalake: Setting the name of the VM: DOD-AMS_datalake_1466797115802_30773
+==> datalake: Clearing any previously set network interfaces...
+==> datalake: Preparing network interfaces based on configuration...
+    datalake: Adapter 1: nat
+    datalake: Adapter 2: hostonly
+==> datalake: Forwarding ports...
+    datalake: 22 (guest) => 10123 (host) (adapter 1)
+    datalake: 80 (guest) => 9080 (host) (adapter 1)
+    datalake: 5601 (guest) => 5601 (host) (adapter 1)
+    datalake: 3000 (guest) => 3000 (host) (adapter 1)
+    datalake: 2003 (guest) => 2003 (host) (adapter 1)
+    datalake: 2003 (guest) => 2003 (host) (adapter 1)
+    datalake: 9200 (guest) => 9200 (host) (adapter 1)
+    datalake: 2003 (guest) => 2181 (host) (adapter 1)
+    datalake: 2003 (guest) => 9092 (host) (adapter 1)
+==> datalake: Booting VM...
+==> datalake: Waiting for machine to boot. This may take a few minutes...
+    datalake:** SSH address: 127.0.0.1:10123**
+    datalake:** SSH username: vagrant**
+    datalake:** SSH auth method: private key**
+    datalake: 
+    datalake: Vagrant insecure key detected. Vagrant will automatically replace
+    datalake: this with a newly generated keypair for better security.
+    datalake: 
+    datalake: Inserting generated public key within guest...
+    datalake: Removing insecure key from the guest if it's present...
+    datalake: Key inserted! Disconnecting and reconnecting using new SSH key...
+==> datalake: Machine booted and ready!
+==> datalake: Checking for guest additions in VM...
+    datalake: No guest additions were detected on the base box for this VM! Guest
+    datalake: additions are required for forwarded ports, shared folders, host only
+    datalake: networking, and more. If SSH fails on this machine, please install
+    datalake: the guest additions and repackage the box to continue.
+    datalake: 
+    datalake: This is not an error message; everything may continue to work properly,
+    datalake: in which case you may ignore this message.
+==> datalake: Setting hostname...
+==> datalake: Configuring and enabling network interfaces...
+==> datalake: Mounting shared folders...
+    datalake: /home/vagrant/sync => /Users/avwinbox/VagrantBoxes/DOD-AMS
+```
+> Note: For Windows user the ssh command isn't available by default. You can PuTTY to connect to the local created VM by address 127.0.0.1 with port 10123.
+Default username & password are 'vagrant/vagrant'
+
+$vagrant ssh
+Last login: Sun Jun 19 21:00:06 2016
+-bash: warning: setlocale: LC_CTYPE: cannot change locale (UTF-8): No such file or directory
+[vagrant@datalake ~]$
+```
+
 <a id="first"></a>
 ## 1.0 Installing and initial configuration of the first components
 

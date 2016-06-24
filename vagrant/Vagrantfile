@@ -1,0 +1,25 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+
+config.vm.synced_folder ".", "/home/vagrant/sync/", type: "virtualbox"
+
+config.vm.define "datalake" do |datalake|
+    datalake.vm.box = "DOD-AMS-WORKSHOP"
+    datalake.vm.hostname = 'datalake.monitor.now'
+    datalake.vm.box_url = "DOD-AMS-WORKSHOP.box"
+
+    datalake.vm.network :private_network, ip: "192.168.60.10"
+    datalake.vm.network :forwarded_port, guest: 22, host: 2222, disabled: true
+    datalake.vm.network :forwarded_port, guest: 22, host: 10123, id: "ssh"
+    datalake.vm.network :forwarded_port, guest: 80, host: 9080 
+    datalake.vm.network :forwarded_port, guest: 5601, host: 5601
+    datalake.vm.network :forwarded_port, guest: 3000, host: 3000
+    datalake.vm.network :forwarded_port, guest: 2003, host: 2003, protocol: "tcp"
+    datalake.vm.network :forwarded_port, guest: 2003, host: 2003, protocol: "udp"
+    datalake.vm.network :forwarded_port, guest: 9200, host: 9200
+    datalake.vm.network :forwarded_port, guest: 2003, host: 2181 
+    datalake.vm.network :forwarded_port, guest: 2003, host: 9092 
+end
+end
