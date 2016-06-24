@@ -220,9 +220,9 @@ $ firewall-cmd --reload
 At last we can configure the service configuration and start the service. Notice it is using systemd
 
 ```
-sudo systemctl daemon-reload
-sudo systemctl enable elasticsearch.service
-sudo systemctl start elasticsearch.service
+$ sudo systemctl daemon-reload
+$ sudo systemctl enable elasticsearch.service
+$ sudo systemctl start elasticsearch.service
 ```
 
 <a id="logstash"></a>
@@ -239,8 +239,8 @@ $ sudo yum -y install logstash
 At last we can configure the service configuration. Notice it is not using systemd.
 
 ```
-sudo systemctl daemon-reload
-sudo systemctl enable logstash.service
+$ sudo systemctl daemon-reload
+$ sudo systemctl enable logstash.service
 ```
 
 <a id="kibana"></a>
@@ -270,10 +270,18 @@ $ firewall-cmd --permanent --add-service kibana
 $ firewall-cmd --reload
 ```
 
-At last we can configure the service configuration. Notice it is not using systemd.
+At last we can configure the service configuration. Notice it is using systemd.
 
 ```
-sudo systemctl daemon-reload
-sudo systemctl enable kibana.service
-sudo systemctl start kibana.service
+$ sudo systemctl daemon-reload
+$ sudo systemctl enable kibana.service
+$ sudo systemctl start kibana.service
 ```
+
+<a id="graphite"></a>
+## 1.3 Install & configure Graphite
+
+> Note : Be aware that for this task internet connectivity is needed. For convenience the Elastic repository is configured and there is already a cache yum download available.
+
+Below the commands for installing Graphite. As you can see Graphite has more things to taken care.
+
