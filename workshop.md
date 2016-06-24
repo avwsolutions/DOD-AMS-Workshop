@@ -92,7 +92,8 @@ The [installation](https://www.vagrantup.com/docs/installation/) and [getting s
 
 Now that you have everything setup, it's time to get our hands dirty. In this first section you will install and setup all first used tools. For this some configuration templates be helpful, which are part of the [DOD-AMS-Workshop](https://github.com/avwsolutions/DOD-AMS-Workshop) repository.
 
-> Note : Be aware that for this task internet connectivity is needed. For convenience
+> Note : Be aware that for this task internet connectivity is needed. For convenience there is already a cache version available.
+
 To get started type the following command in your terminal
 ```
 $ sudo su -
