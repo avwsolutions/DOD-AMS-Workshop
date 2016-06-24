@@ -281,7 +281,25 @@ $ sudo systemctl start kibana.service
 <a id="graphite"></a>
 ## 1.3 Install & configure Graphite
 
-> Note : Be aware that for this task internet connectivity is needed. For convenience the Elastic repository is configured and there is already a cache yum download available.
+> Note : Be aware that for this task internet connectivity is needed. For convenience the Epel repository is configured and there is already a cache yum download available.
 
 Below the commands for installing Graphite. As you can see Graphite has more things to taken care.
+First we are going to install the dependencies and mandatory web server, python tools and compilers.
+
+```
+$ sudo yum -y install httpd gcc gcc-c++ git pycairo mod_wsgi epel-release
+$ sudo yum -y install python-pip python-devel blas-devel lapack-devel libffi-devel
+```
+Now we will download the latest graphite packages from github.
+
+> Note : Be aware that for this task internet connectivity is needed. For convenience there is already a cache version available. 
+
+```
+$ sudo su -
+$ cd /usr/local/src
+$ git clone https://github.com/graphite-project/graphite-web.git
+$ git clone https://github.com/graphite-project/carbon.git
+```
+
+
 
