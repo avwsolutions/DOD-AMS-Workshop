@@ -6,13 +6,13 @@
 
 ### What is a IT Operational Data Lake?
 
-As Wikipedia describes 
+As [Wikipedia] (https://en.wikipedia.org/wiki/Data_lake) describes 
 
 *“A data lake is a method of storing data within a system that facilitates the colocation of data in variant schemas and structural forms, usually object blobs or files. The main challenge is not creating a data lake, but taking advantages of the opportunities it presents of unsiloed data”*
 
 To make it more IT Operations specific.
 
-An IT Operational data lake is a method of storing and structuring IT landscape availability, performance, transaction and usability data and take the advantage to improve the quality and experience of customer journeys through your value chains. Which then can be seen as next-level chain monitoring awareness. Main opportunities are to become more proactive and even predictive in your monitoring approach by using it for diagnose, analytics and even machine learning. This dataset (using the metadata) can then be easily accessed by visualizations or alerting mechanisms.
+An **IT Operational data lake** is a method of storing and structuring **IT landscape availability, performance, transaction and usability data** and **take** the **advantage** to **improve** the **quality** and **experience** of **customer journeys** through your **value chains**. Which then can be seen as **next-level chain monitoring awareness**. Main opportunities are to become more **proactive** and even **predictive** in your monitoring approach by using it for **diagnose, analytics** and even **machine learning**. This **dataset** (using the **metadata**) can then be easily accessed by **visualizations** or **alerting** mechanisms.
 
 To support all this functionality, we need tools and technology that near real-time can support big loads of monitoring data like events, metrics and health-states. 
 
@@ -29,3 +29,60 @@ First we will simulate a Producer for events and metrics. At the end we will cre
 
 Even if you have no prior experience with these tools, this workshop should be all you need to get started.
 
+## Using this Document
+
+This document contains a series of several sections, each of which explains a particular aspect of the data lake solution. In each section, you will be typing commands (or writing code). All the code used in the workshop is available in the [Github repo] (https://github.com/avwsolutions/DOD-AMS-Workshop).
+
+<a href="#top" class="top" id="table-of-contents">Top</a>
+## Table of Contents
+
+- [Preface](#preface)
+    - [Prerequisites](#prerequisites)
+    - [Setting up your computer](#setup)
+-   [1.0 Installing and initial configuration of the first components](#first)
+    -   [1.1 Install & configure Elasticsearch](#elasticsearch)
+    -   [1.2 Install & configure Logstash](#logstash)
+    -   [1.3 Install & configure Kibana](#kibana)
+    -   [1.4 Install & configure Graphite](#graphite)
+    -   [1.5 Install & configure Grafana](#grafana)
+-   [2.0 Setting up your first logstash configuration](#bankitlog)
+    -   [2.1 Scenario](#case)
+    -   [2.2 Docker Images](#docker-images)
+    -   [2.3 Our First Image](#our-image)
+    -   [2.4 Dockerfile](#dockerfiles)
+-  [3.0 Birthday training](#dockercompetition)
+  - [3.1 Pull voting-app images](#pullimage)
+  - [3.2 Customize the App](#customize)
+    - [3.2.1 Modify app.py](#modifyapp)
+    - [3.2.2 Modify config.json](#modifyconfig)
+    - [3.2.3 Building and running the app](#buildvotingapp)
+    - [3.2.4 Build and tag images](#buildandtag)
+    - [3.2.5 Push images to Docker Hub](#pushimages)
+  - [3.3 Enter competition](#confirmtraining)
+  - [3.4 Check your submission status](#checkstatus)
+-  [4.0 Next Steps: Docker Birthday #3 App Challenge](#wrap-up)
+-  [References](#references)
+
+------------------------------
+<a href="#table-of-contents" class="top" id="preface">Top</a>
+## Preface
+
+> Note: This workshop uses the folowing versions.
+- [Elasticsearch](https://www.elastic.co/downloads/elasticsearch), version **2.3.3**
+- [Logstash](https://www.elastic.co/downloads/logstash), version **2.3.3**
+- [Kibana](https://www.elastic.co/downloads/kibana), version **4.5.1**
+- [Graphite](https://github.com/graphite-project), version **0.9.15**
+- [Grafana](http://grafana.org/download/), version **3.0.4**
+- [Kafka](http://kafka.apache.org/downloads.html), version **.0.10.0.0**
+
+If you find any part of the workshop exercises incompatible with a future version, please raise an [issue](https://github.com/avwsolutions/DOD-AMS-Workshop/issues). Thanks!
+
+<a id="prerequisites"></a>
+### Prerequisites
+
+There are no specific skills needed for this workshop beyond a basic comfort with the command line and using a text editor. Prior experience in implementing monitoring applications will be helpful but is not required. As you proceed further along the workshop, we'll make use of Github.
+
+<a id="setup"></a>
+### Setting up your computer
+Setting up a consistent test environment can be a time consuming task, but thankfully with use of Vagrant this is a very easy task. Benefits of Vagrant are the consistent workflow and the easiness of environment lifecycle, like disposal.
+The [installation](https://www.vagrantup.com/docs/installation/) and [getting started guide](https://www.vagrantup.com/docs/getting-started/) has detailed instructions for setting up Vagrant on Mac, Linux and Windows.
