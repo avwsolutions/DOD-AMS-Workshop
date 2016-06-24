@@ -236,11 +236,10 @@ Below the commands for installing logstash.
 $ sudo yum -y install logstash 
 ```
 
-At last we can configure the service configuration and start the service. Notice it is using systemd
+At last we can configure the service configuration. Notice it is not using systemd.
 
 ```
 sudo systemctl daemon-reload
 sudo systemctl enable logstash.service
-sudo systemctl start logstash.service
 ```
 
