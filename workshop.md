@@ -138,6 +138,7 @@ Bringing machine 'datalake' up with 'virtualbox' provider...
 > Note: For Windows user the ssh command isn't available by default. You can PuTTY to connect to the local created VM by address 127.0.0.1 with port 10123.
 Default username & password are 'vagrant/vagrant'
 
+```
 $vagrant ssh
 Last login: Sun Jun 19 21:00:06 2016
 -bash: warning: setlocale: LC_CTYPE: cannot change locale (UTF-8): No such file or directory
