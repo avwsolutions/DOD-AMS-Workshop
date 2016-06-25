@@ -557,8 +557,8 @@ At last we can configure the service configuration. Notice it is using systemd.
 
 ```
 $ sudo systemctl daemon-reload
-$ sudo systemctl enable grafana.service
-$ sudo systemctl start grafana.service
+$ sudo systemctl enable grafana-server.service
+$ sudo systemctl start grafana-server.service
 ```
 
 
