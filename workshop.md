@@ -580,3 +580,39 @@ in this part of the scenario we have to gather the events from the Middleware an
 ## 2.1 Your first logstash configuration 
 
 Now it is finally time to play around with logstash. If you never used logstash, these excercises are there to be familiar with the syntax. Otherwise skip this section and start at <a href="#syslog" class="syslog" id="basics">2.2 Connecting the syslog</a>
+
+Do your first inline code with LogStash using your standard input (command) and output (screen) channels.
+
+```
+$ /opt/logstash/bin/logstash -e 'input { stdin { } } output { stdout {} }'
+```
+After the logstash agent is initialized, it is waiting for input. Now type in '*Hello DevOpsDays AMS2016*' and press <ENTER>.
+You will see logstash to respond to that with a message.
+
+```
+Settings: Default pipeline workers: 1
+Pipeline main started
+Hello DevOpsDays AMS2016
+2016-06-25T02:16:59.848Z datalake.monitor.now Hello DevOpsDays AMS2016
+```
+
+No close the worker `CTRL-C` and add some additional code. Do you see what are the differences ?
+
+```
+/opt/logstash/bin/logstash -e 'input { stdin { } } filter { mutate { gsub => [ "message","DevOpsDays.*","Student" ] } }output { stdout { codec => json } }'
+``` 
+You will see logstsh to respond to that with a message.
+
+```
+Settings: Default pipeline workers: 1
+Pipeline main started
+Hello DevOpsDays AMS2016
+{"message":"Hello Student","@version":"1","@timestamp":"2016-06-25T02:28:36.809Z","host":"datalake.monitor.now"}
+```
+
+
+
+
+
+
+
