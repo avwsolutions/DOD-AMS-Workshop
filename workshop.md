@@ -601,7 +601,7 @@ No close the worker `CTRL-C` and add some additional code. Do you see what are t
 ```
 /opt/logstash/bin/logstash -e 'input { stdin { } } filter { mutate { gsub => [ "message","DevOpsDays.*","Student" ] } }output { stdout { codec => json } }'
 ``` 
-You will see logstsh to respond to that with a message.
+You will see logstash to respond to that with a message.
 
 ```
 Settings: Default pipeline workers: 1
@@ -609,7 +609,45 @@ Pipeline main started
 Hello DevOpsDays AMS2016
 {"message":"Hello Student","@version":"1","@timestamp":"2016-06-25T02:28:36.809Z","host":"datalake.monitor.now"}
 ```
+Last thing I want you to show is the use of conditional support. As with programming languages the if/if else/else can be used with a chosen expression.
+Now first create a directory, for example '*/tmp/example*' and create three files as listed below.
 
+> Note : Logstash can run code from one file or a directory which we show below. Be aware of the correct naming that input code is always imported first.
+
+```
+000-input.conf
+
+input { stdin { } }
+```
+
+```
+500-filter.conf
+
+filter {
+	if [message] == "carrot" {
+     		mutate { add_field => { "guess" => "You are a Bugs Bunny" } }
+	} else if [message] == "pizza" {
+     		mutate { add_field => { "guess" => "You are Mario Bros" } }
+	} else {
+     		mutate { add_field => { "guess" => "Guessing seems impossible" } }
+	}
+}
+```
+
+```
+900-output.conf
+
+output {
+  #elasticsearch { hosts => ["localhost:9200"] }
+  stdout { codec => rubydebug }
+}
+```
+
+Now start the code by the command below en play with the input [carrot, pizza or other]
+
+```
+/opt/logstash/bin/logstash  -f /tmp/example
+```
 
 
 
