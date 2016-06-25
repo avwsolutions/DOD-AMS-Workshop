@@ -361,7 +361,7 @@ $ sudo chmod +x /etc/init.d/carbon-*
 
 ```
 
-Now it is time to configure graphite-web component. This step is import because we will now create the local SQLite DB file for graphite-web, which is for administrative purposes. Don't be confused this is not the database where the metrics are stored.To have minimized security you're asked to fill in the username and password. Please leave the username default (root) and choose '*password*' as password.
+Now it is time to configure graphite-web component. This step is import because we will now create the local SQLite DB file for graphite-web, which is for administrative purposes. Don't be confused this is not the database where the metrics are stored.To have minimized security you're asked to fill in the username and password. Please leave the username default '*root*' and choose '*password*' as password.
 
 ```
 $ sudo su -
@@ -369,7 +369,7 @@ $ sudo su -
 # PYTHONPATH=/opt/graphite/webapp/ django-admin.py syncdb --settings=graphite.settings
 ```
 
-> Response : Yes, accept default '*root*' and use '*password*' as password.
+> Response : Yes, accept default '*root*', leave the email address '*empty*' and use '*password*' as password.
 
 Also the static content will be generated. Also don't forget to set the correct owner for the *httpd* server.
 
