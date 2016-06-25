@@ -350,6 +350,7 @@ $ sudo cp /opt/graphite/conf/carbon.conf.example /opt/graphite/conf/carbon.conf
 $ sudo cp /opt/graphite/conf/storage-schemas.conf.example /opt/graphite/conf/storage-schemas.conf
 $ sudo cp /opt/graphite/conf/storage-aggregation.conf.example /opt/graphite/conf/storage-aggregation.conf
 $ sudo cp /opt/graphite/conf/relay-rules.conf.example /opt/graphite/conf/relay-rules.conf
+$ sudo cp /opt/graphite/conf/aggregation-rules.conf.example /opt/graphite/conf/aggregation-rules.conf
 $ sudo cp /opt/graphite/webapp/graphite/local_settings.py.example /opt/graphite/webapp/graphite/local_settings.py
 $ sudo cp /opt/graphite/conf/graphite.wsgi.example /opt/graphite/conf/graphite.wsgi
 $ sudo cp /opt/graphite/examples/example-graphite-vhost.conf /etc/httpd/conf.d/graphite.conf
@@ -411,7 +412,7 @@ Since there default virtual host configuration template for *httpd* is not worki
 - Add the following configuration for the '*/opt/graphite/static*' directory
 
 ```
-Directory /opt/graphite/static/>
+<Directory /opt/graphite/static/>
  	<IfVersion < 2.4>
                          Order deny,allow
                          Allow from all
@@ -512,6 +513,7 @@ At last we can configure the service configuration. Notice it is not using syste
 $ sudo systemctl daemon-reload
 $ sudo systemctl enable httpd.service
 $ sudo systemctl start httpd.service
+$ curl http://localhost
 ```
 
 ```
@@ -524,5 +526,39 @@ $ sudo systemctl start carbon-cache
 
 ```
 
+<a id="grafana"></a>
+## 1.5 Install & configure Grafana
+
+> Note : Be aware that for this task internet connectivity is needed. For convenience the Grafana repository is configured and there is already a cache yum download available.
+
+Below the commands for installing grafana.
+
+```
+$ sudo yum -y install grafana 
+```
+Since we run a local firewall we need to enable access to the port
+
+```
+$ sudo su -
+# cd /usr/lib/firewalld/services
+# vi grafana.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Grafana</short>  <description>Grafana Appl server, which is based on http traffic.</description>
+  <port protocol="tcp" port="3000"/>
+</service>
+
+# firewall-cmd --permanent --add-service grafana
+# firewall-cmd --reload
+```
+
+At last we can configure the service configuration. Notice it is using systemd.
+
+```
+$ sudo systemctl daemon-reload
+$ sudo systemctl enable grafana.service
+$ sudo systemctl start grafana.service
+```
 
 
