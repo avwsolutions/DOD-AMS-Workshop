@@ -510,8 +510,8 @@ At last we can configure the service configuration. Notice it is not using syste
 
 ```
 $ sudo systemctl daemon-reload
-$ sudo systemctl enable graphite-web.service
-$ sudo systemctl start graphite-web.service
+$ sudo systemctl enable httpd.service
+$ sudo systemctl start httpd.service
 ```
 
 ```
