@@ -565,8 +565,6 @@ $ curl http://localhost:3000/login
 <a id="bankit1"></a>
 ## 2.0 BankIT Scenario : part1 
 
-2.0 BankIT Scenario : part1 ](#bankit1)
-
 You are hired as an experienced Engineer at a new FINTEC startup, named Bank IT. You are part of the DevOps team which delivers the core Cloud Platform, which is used by the BankIT application. Whitin the current sprint you are designated to help Kenny setting up the ITOps data lake. Kenny already has setup the functional needs, but has a lack of technical skills.
 
 in this part of the scenario we have to gather the events from the Middleware and Operating System.BankIT itself is a web based application, which has Tomcat application server as Middleware and Linux as Operating System. 
