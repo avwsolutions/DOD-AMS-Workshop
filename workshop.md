@@ -628,6 +628,8 @@ filter {
      		mutate { add_field => { "guess" => "You are a Bugs Bunny" } }
 	} else if [message] == "pizza" {
      		mutate { add_field => { "guess" => "You are Mario Bros" } }
+	} else if [message] == "beer" {
+                mutate { add_field => { "guess" => "You are on the DevOpsDays 2016 AMS, beerops" } }
 	} else {
      		mutate { add_field => { "guess" => "Guessing seems impossible" } }
 	}
@@ -638,12 +640,11 @@ filter {
 900-output.conf
 
 output {
-  #elasticsearch { hosts => ["localhost:9200"] }
   stdout { codec => rubydebug }
 }
 ```
 
-Now start the code by the command below en play with the input [carrot, pizza or other]
+Now start the code by the command below en play with the input [carrot, pizza, beer or other]. Look at the guess field for the response.
 
 ```
 /opt/logstash/bin/logstash  -f /tmp/example
