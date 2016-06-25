@@ -155,8 +155,8 @@ Now that you have everything setup, it's time to get our hands dirty. In this fi
 To get started type the following command in your terminal
 ```
 $ sudo su -
-$ cd /usr/local/src
-$ git clone https://github.com/avwsolutions/DOD-AMS-Workshop
+# cd /usr/local/src
+# git clone https://github.com/avwsolutions/DOD-AMS-Workshop
 ```
 
 <a id="elasticsearch"></a>
@@ -204,8 +204,8 @@ Since we run a local firewall we need to enable access to the port
 
 ```
 $ sudo su -
-$ cd /usr/lib/firewalld/services
-$ vi elasticsearch.xml
+# cd /usr/lib/firewalld/services
+# vi elasticsearch.xml
 
 <?xml version="1.0" encoding="utf-8"?>
 <service>
@@ -213,8 +213,8 @@ $ vi elasticsearch.xml
   <port protocol="tcp" port="9200"/>
 </service>
 
-$ firewall-cmd --permanent --add-service elasticsearch
-$ firewall-cmd --reload
+# firewall-cmd --permanent --add-service elasticsearch
+# firewall-cmd --reload
 ```
 
 At last we can configure the service configuration and start the service. Notice it is using systemd
@@ -257,8 +257,8 @@ Since we run a local firewall we need to enable access to the port
 
 ```
 $ sudo su -
-$ cd /usr/lib/firewalld/services
-$ vi kibana.xml
+# cd /usr/lib/firewalld/services
+# vi kibana.xml
 
 <?xml version="1.0" encoding="utf-8"?>
 <service>
@@ -266,8 +266,8 @@ $ vi kibana.xml
   <port protocol="tcp" port="5601"/>
 </service>
 
-$ firewall-cmd --permanent --add-service kibana 
-$ firewall-cmd --reload
+# firewall-cmd --permanent --add-service kibana 
+# firewall-cmd --reload
 ```
 
 At last we can configure the service configuration. Notice it is using systemd.
@@ -279,7 +279,7 @@ $ sudo systemctl start kibana.service
 ```
 
 <a id="graphite"></a>
-## 1.3 Install & configure Graphite
+## 1.4 Install & configure Graphite
 
 > Note : Be aware that for this task internet connectivity is needed. For convenience the Epel repository is configured and there is already a cache yum download available.
 
@@ -296,15 +296,15 @@ Now we will download the latest graphite packages from github.
 
 ```
 $ sudo su -
-$ cd /usr/local/src
-$ git clone https://github.com/graphite-project/graphite-web.git
-$ git clone https://github.com/graphite-project/carbon.git
+# cd /usr/local/src
+# git clone https://github.com/graphite-project/graphite-web.git
+# git clone https://github.com/graphite-project/carbon.git
 ```
-Now that we have the sources we are ready to install the binaries. This is done through the `pip` command. Since there are some changes in Django 1.9.x release, it is mandatory to first update the requirements.txt input file.
+Now that we have the sources we are ready to install the binaries. This is done through the `pip` command. Since there are some changes "[syncdb deprecated]"(https://docs.djangoproject.com/en/1.7/topics/migrations/) in Django 1.9.x release, it is mandatory to first update the requirements.txt input file.
 
 ```
 $ sudo su -
-$ vi /usr/local/src/graphite-web/requirements.txt
+# vi /usr/local/src/graphite-web/requirements.txt
 
 # old value => Django>=1.4
 Django==1.8
@@ -313,11 +313,11 @@ Now start the `pip` installer.
 
 ```
 $ sudo su -
-$ pip install -r /usr/local/src/graphite-web/requirements.txt
+# pip install -r /usr/local/src/graphite-web/requirements.txt
 
 #verify if Django has the right version
 
-$ python
+# python
 Python 2.7.5 (default, Nov 20 2015, 02:00:19) 
 [GCC 4.8.5 20150623 (Red Hat 4.8.5-4)] on linux2
 Type "help", "copyright", "credits" or "license" for more information.
@@ -332,18 +332,18 @@ Next steps are running the setup script for installing carbon.
 
 ```
 $ sudo su -
-$ cd /usr/local/src/carbon/
-$ python setup.py install
+# cd /usr/local/src/carbon/
+# python setup.py install
 ```
 Now repeat these steps for graphite-web.
 
 ```
 $ sudo su -
-$ cd /usr/local/src/graphite-web/
-$ python setup.py install
+# cd /usr/local/src/graphite-web/
+# python setup.py install
 ```
 
-Now copy over all template configurations (graphite-web and carbon-*) and setup the service startup files.
+Copy over all template configurations (graphite-web and carbon-*) and setup the service startup files.
 
 ```
 $ sudo cp /opt/graphite/conf/carbon.conf.example /opt/graphite/conf/carbon.conf
@@ -360,3 +360,58 @@ $ sudo cp /usr/local/src/carbon/distro/redhat/init.d/carbon-* /etc/init.d/
 $ sudo chmod +x /etc/init.d/carbon-*
 
 ```
+
+Now it is time to configure graphite-web component. This step is import because we will now create the local SQLite DB file for graphite-web, which is for administrative purposes. Don't be confused this is not the database where the metrics are stored.To have minimized security you're asked to fill in the username and password. Please leave the username default (root) and choose '*password*' as password.
+
+```
+$ sudo su -
+# cd /opt/graphite
+# PYTHONPATH=/opt/graphite/webapp/ django-admin.py syncdb --settings=graphite.settings
+```
+
+> Response : Yes, accept default '*root*' and use '*password*' as password.
+
+Also the static content will be generated. Also don't forget to set the correct owner for the *httpd* server.
+
+> Note : Currently we are running in SELinux *Permissive* mode instead of *Enforcing*.In production environments always move your webserver content to the */var/www/html* or implement the correct *SELinux* acccess control Security contexts. 
+
+```
+$ sudo su -
+# cd /opt/graphite
+# PYTHONPATH=/opt/graphite/webapp/ django-admin.py collectstatic --settings=graphite.settings
+
+# chown -R apache:apache /opt/graphite/storage/
+# chown -R apache:apache /opt/graphite/static/
+# chown -R apache:apache /opt/graphite/webapp/
+
+```
+Now we have to update the firewall configuration again.
+
+```
+$ sudo su -
+# cd /usr/lib/firewalld/services
+# vi carbonrelay.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Carbon-relay</short>  <description>Port for retrieving metrics for various sources.</description>
+  <port protocol="tcp" port="2003"/>
+  <port protocol="udp" port="2003"/>
+</service>
+
+# firewall-cmd --permanent --add-service http
+# firewall-cmd --permanent --add-service carbonrelay 
+# firewall-cmd --reload
+
+```
+
+At last we can configure the service configuration. Notice it is not using systemd.
+
+```
+$ sudo systemctl daemon-reload
+$ sudo systemctl enable graphite-web.service
+$ sudo systemctl start graphite-web.service
+```
+
+
+
