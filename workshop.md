@@ -425,7 +425,7 @@ Directory /opt/graphite/static/>
 - And uncomment the following lines
 
 ```
-WSGIScriptAlias /graphite /srv/graphite-web/conf/graphite.wsgi/graphite
+	# WSGIScriptAlias /graphite /srv/graphite-web/conf/graphite.wsgi/graphite
         # Alias /graphite/static /opt/graphite/webapp/content
         #  <Location "/graphite/static/">
         #        SetHandler None
@@ -512,6 +512,16 @@ At last we can configure the service configuration. Notice it is not using syste
 $ sudo systemctl daemon-reload
 $ sudo systemctl enable graphite-web.service
 $ sudo systemctl start graphite-web.service
+```
+
+```
+$ sudo systemctl enable carbon-relay
+$ sudo systemctl enable carbon-aggregator
+$ sudo systemctl enable carbon-cache
+$ sudo systemctl start carbon-relay
+$ sudo systemctl start carbon-aggregator
+$ sudo systemctl start carbon-cache
+
 ```
 
 
