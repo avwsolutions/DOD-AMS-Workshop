@@ -45,11 +45,12 @@ This document contains a series of several sections, each of which explains a pa
     -   [1.3 Install & configure Kibana](#kibana)
     -   [1.4 Install & configure Graphite](#graphite)
     -   [1.5 Install & configure Grafana](#grafana)
--   [2.0 Setting up your first logstash configuration](#bankitlog)
-    -   [2.1 Scenario](#case)
-    -   [2.2 Docker Images](#docker-images)
-    -   [2.3 Our First Image](#our-image)
-    -   [2.4 Dockerfile](#dockerfiles)
+-   [2.0 BankIT Scenario : part1 ](#bankit1)
+    -   [2.1 Your first logstash configuration](#basics)
+    -   [2.2 Connecting the syslog](#syslog)
+    -   [2.3 Our application logs](#logfile)
+    -   [2.4 Using grok filtering](#grok)
+    -   [2.5 Our first kibana dashboard](#fkibana)
 -  [3.0 Birthday training](#dockercompetition)
   - [3.1 Pull voting-app images](#pullimage)
   - [3.2 Customize the App](#customize)
@@ -559,6 +560,25 @@ At last we can configure the service configuration. Notice it is using systemd.
 $ sudo systemctl daemon-reload
 $ sudo systemctl enable grafana-server.service
 $ sudo systemctl start grafana-server.service
+$ curl http://localhost:3000/login
 ```
+<a id="bankit1"></a>
+## 2.0 BankIT Scenario : part1 
 
+2.0 BankIT Scenario : part1 ](#bankit1)
 
+You are hired as an experienced Engineer at a new FINTEC startup, named Bank IT. You are part of the DevOps team which delivers the core Cloud Platform, which is used by the BankIT application. Whitin the current sprint you are designated to help Kenny setting up the ITOps data lake. Kenny already has setup the functional needs, but has a lack of technical skills.
+
+in this part of the scenario we have to gather the events from the Middleware and Operating System.BankIT itself is a web based application, which has Tomcat application server as Middleware and Linux as Operating System. 
+
+Below the functional needs:
+
+- All Operating System messages (syslog) must be available in the data lake.
+- All Middleware messages must be available in the data lake.
+- Security related messages (facility 4/10 - audit) must be masked.
+- Original timestamp must be used from source ( not on arrival )
+
+<a id="basics"></a>
+## 2.1 Your first logstash configuration 
+
+Now it is finally time to play around with logstash. If you never used logstash, these excercises are there to be familiar with the syntax. Otherwise skip this section and start at <a href="#syslog" class="syslog" id="basics">2.2 Connecting the syslog</a>
