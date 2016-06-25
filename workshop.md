@@ -404,6 +404,107 @@ $ sudo su -
 # firewall-cmd --reload
 
 ```
+Since there default virtual host configuration template for *httpd* is not working due CentOS restrictions (httpd 2.4), we have to add some additional configuration.
+
+**Correct configuration**
+
+- Add the following configuration for the '*/opt/graphite/static*' directory
+
+```
+Directory /opt/graphite/static/>
+ 	<IfVersion < 2.4>
+                         Order deny,allow
+                         Allow from all
+                 </IfVersion>
+                 <IfVersion >= 2.4>
+                         Require all granted
+                 </IfVersion>
+         </Directory>
+```
+
+- And uncomment the following lines
+
+```
+WSGIScriptAlias /graphite /srv/graphite-web/conf/graphite.wsgi/graphite
+        # Alias /graphite/static /opt/graphite/webapp/content
+        #  <Location "/graphite/static/">
+        #        SetHandler None
+        # </Location>
+```
+
+```
+$ sudo vi /etc/httpd/conf.d/graphite.conf
+...
+
+<VirtualHost *:80>
+        ServerName graphite
+        DocumentRoot "/opt/graphite/webapp"
+        ErrorLog /opt/graphite/storage/log/webapp/error.log
+        CustomLog /opt/graphite/storage/log/webapp/access.log common
+
+        # I've found that an equal number of processes & threads tends
+        # to show the best performance for Graphite (ymmv).
+        WSGIDaemonProcess graphite processes=5 threads=5 display-name='%{GROUP}' inactivity-timeout=120
+        WSGIProcessGroup graphite
+        WSGIApplicationGroup %{GLOBAL}
+        WSGIImportScript /opt/graphite/conf/graphite.wsgi process-group=graphite application-group=%{GLOBAL}
+
+        # XXX You will need to create this file! There is a graphite.wsgi.example
+        # file in this directory that you can safely use, just copy it to graphite.wgsi
+        WSGIScriptAlias / /opt/graphite/conf/graphite.wsgi
+
+
+        # XXX To serve static files, either:
+        # * Install the whitenoise Python package (pip install whitenoise)
+        # * Collect static files in a directory by running:
+        #     django-admin.py collectstatic --noinput --settings=graphite.settings
+        #   And set an alias to serve static files with Apache:
+        Alias /static/ /opt/graphite/static/
+
+        <Directory /opt/graphite/static/>
+        <IfVersion < 2.4>
+                        Order deny,allow
+                        Allow from all
+                </IfVersion>
+                <IfVersion >= 2.4>
+                        Require all granted
+                </IfVersion>
+        </Directory>
+        ########################
+        # URL-prefixed install #
+        ########################
+        # If using URL_PREFIX in local_settings for URL-prefixed install (that is not located at "/"))
+        # your WSGIScriptAlias line should look like the following (e.g. URL_PREFX="/graphite"
+
+        WSGIScriptAlias /graphite /srv/graphite-web/conf/graphite.wsgi/graphite
+        Alias /graphite/static /opt/graphite/webapp/content
+        <Location "/graphite/static/">
+               SetHandler None
+        </Location>
+	# XXX In order for the django admin site media to work you
+        # must change @DJANGO_ROOT@ to be the path to your django
+        # installation, which is probably something like:
+        # /usr/lib/python2.6/site-packages/django
+        Alias /media/ "@DJANGO_ROOT@/contrib/admin/media/"
+
+        # The graphite.wsgi file has to be accessible by apache. It won't
+        # be visible to clients because of the DocumentRoot though.
+        <Directory /opt/graphite/conf/>
+                <IfVersion < 2.4>
+                        Order deny,allow
+                        Allow from all
+                </IfVersion>
+                <IfVersion >= 2.4>
+                        Require all granted
+                </IfVersion>
+        </Directory>
+
+</VirtualHost>
+
+```
+
+
+
 
 At last we can configure the service configuration. Notice it is not using systemd.
 
