@@ -573,8 +573,11 @@ in this part of the scenario we have to gather the events from the Middleware an
 
 - All Operating System messages (syslog) must be available in the data lake.
 - All Middleware messages must be available in the data lake.
-- Security related messages (facility 4/10 - audit) must be masked.
+- Security related messages (facility 4/10 - audit, ) must be masked.
 - Original timestamp must be used from source ( not on arrival )
+- Application context must be added, either Functional or Technical.
+- Customer privacy-sensitive messages must not enter the data lake.
+- All messages that not match a pattern must be traceable for optimalization.
 
 <a id="basics"></a>
 ## 2.1 Your first logstash configuration 
@@ -994,15 +997,38 @@ if "_grokparsefailure" in [tags] {
 
 ```
 
-Last thing we have to do is to fullfil is the requirement to enrich our application messages with the application context:Functional or Technical.
-
-Also there can be lines that you really don't want to receive in your data lake. For this you can use the special filter called '*drop*'. Our advice is to add this on top of your filter configuration. In this scenario dropping application messages that contain 'NAWModule' will do the trick.
+Last thing we have to do is to fullfil is the requirement to enrich our application messages with the *application context:Functional or Technical* and drop privacy-sensitive messages.
+This are the lines that you really don't want to receive in your data lake. 
 
 For this we received the following mapping.
 
 - Messages from module:HouseKeepingModule must have the Technical application context.
 - Messages from module:RegistrationModule must have the Functional application context.
 - Messages from module:NAWModule have Security context and must be dropped.
+
+First we create two *if* statements on the '*appl_module*' value (HouseKeepingModule or RegistrationModule) to add an addtional field '*appl_context*' with either *Technical* or *Functional*.
+Be aware that you put this within the application (if) statement and after the grok filter (otherwise the '*appl_module*' is not yet available).
+
+```
+# grok filter
+
+if [appl_module] =~ /HouseKeepingModule/ {
+             mutate {
+                    add_field => { "appl_context" => "Technical" }
+             }
+}
+
+if [appl_module] =~ /RegistrationModule/ {
+             mutate {
+                    add_field => { "appl_context" => "Functional" }
+             }
+}
+
+# mutate filter
+```
+
+To drop specific received messages you can use the special filter called '*drop*'. Our advice is to add this on top of your filter configuration to minimize processing. In this scenario dropping application messages that contain 'NAWModule' will do the trick.
+Our advice is to add this on top of your filter configuration
 
 ```
 
@@ -1011,4 +1037,19 @@ if [type] == "application" and [message] =~ /NAWModule/ {
 }       
 
 ```
- 
+
+Don't forget to `configtest` and `restart` logstash to activate the new configuration.
+
+```
+$ sudo service logstash configtest
+$ sudo service logstash restart
+```
+
+As last item we can test our configuration. For this a generator is available, which is in the DOD-AMS-Workshop package. probably this is already running in the background, which you can check by `ps -ef | grep log-generator`.
+
+```
+$ sudo su -
+# cd /usr/local/src/DOD-AMS-Workshop/generator
+# ./log-generator.py &
+```
+After starting the log-generator open the Kibana Discover dasboard again and search for 'type:application' to show all application type events.Repeat the same for the 'type:performance' events. 

@@ -40,7 +40,7 @@ def dropEntry (bag,type):
                 	timestamp = datetime.now().strftime('%d-%b-%Y %H:%M:%S.%f')[:-3]
 			entry = timestamp + ' ' + message
 		elif type == 'application':
-			msgs = ["SEVERE [NAWModule] com.ingbank.bankit.NAWModule.Update John Doe record updated with Flevostraat 100, Purmerend","INFO [HouseKeepingModule] com.ingbank.bankit.HouseKeeping.Export Export started for main customer info", "WARNING [RegistrationModule] com.ingbank.bankit.Registration.Account Customer registrated, but no valid account record found"]
+			msgs = ["SEVERE [NAWModule] com.openbank.bankit.NAWModule.Update John Doe record updated with Flevostraat 100, Purmerend","INFO [HouseKeepingModule] com.openbank.bankit.HouseKeeping.Export Export started for main customer info", "WARNING [RegistrationModule] com.openbank.bankit.Registration.Account Customer registrated, but no valid account record found"]
                         message = random.choice(msgs)
                         timestamp = datetime.now().strftime('%d-%b-%Y %H:%M:%S.%f')[:-3]
 			entry = timestamp + ' ' + message
