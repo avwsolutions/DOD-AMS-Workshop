@@ -911,8 +911,7 @@ Below an sample message in the BankIT-application.log
 26-Jun-2016 20:57:54.728 SEVERE [NAWModule] com.openbank.bankit.NAWModule.Update John Doe record updated with Flevostraat 100, Purmerend
 ```
 
-Now that you have the pattern discovered you can implement the code below. please extend our current `/etc/logstash/conf.d/500-filter.conf` configuration.
-
+Now that you have the pattern discovered you can implement the code below. please extend our current `/etc/logstash/conf.d/500-filter.conf` configuration. As you see below we also set the correct timestamp again.
 
 ```
 if [type] == "application" {
@@ -936,3 +935,80 @@ ear} %{tmp_time}" }
 	}
 ```
 
+Since most of the information that we gathered is logging, it doesn't mean that we can save some metrics to enrich a dashboard. To do this correctly we have to make sure we commit our field value in the correct format, which is an *Integer*. Default a field is parsed out with **grok** or **kv** as *String*, but with strings we can't create an histogram over time.
+
+> Note : Also be aware that the first entry of an attribute in elasticsearch will define the datatype.
+
+For implementing the performance log parsing we need another filter type, called '*kv*' or key-value pairs.
+
+Below an sample message in the BankIT-performance.log
+
+```
+key=2016-06-26 21:40:39.999|value=79|module=claims
+```
+
+As you can see the key/value pairs are delimited by and underscore '|' and will be parsed out by the '*kv*' filter. As mentioned above all values are parsed out as String, so we have to convert our string to an integer. At last we will do the timestamp trick again.
+
+Below the code that you can use to extend the `/etc/logstash/conf.d/500-filter.conf` configuration.
+
+```
+
+if [type] == "performance" {
+	kv {
+		field_split => "|"
+		add_field => { "performance_timestamp" => "%{key}" }
+		add_field => { "performance_value" => "%{value}" }
+		add_field => { "appl_module" => "%{module}" }
+	}
+	
+	mutate {
+		convert => [ "performance_value", "integer" ]
+		remove_field => [ "key" ]
+		remove_field => [ "value" ]
+		remove_field => [ "module" ]
+		add_field => { "timestamp" => "%{performance_timestamp}" }
+  	}
+	
+	date {
+		 match => [ "timestamp", "yyyy-MM-dd HH:mm:ss.SSS" ]
+		 remove_field => [ "timestamp" ]
+	}
+
+}
+
+```
+
+Now that we added all grok matches (we know), what will happen with all unmatched messages ?
+These messages will pass by, but will not be parsed, neither enriched. But for handling these messages (with _grokparsefailure tag) we can implement a small solution to replace the message or add an additional header.
+
+In this scenario we will add an additional header in front of the original message using the '*mutate*' filter. Always put this at the end of your filter definitions.
+
+```
+
+if "_grokparsefailure" in [tags] {
+	
+	mutate {
+		replace => { "message" => "PATTERN MISSING: %{message}" }
+  	}
+}
+
+```
+
+Last thing we have to do is to fullfil is the requirement to enrich our application messages with the application context:Functional or Technical.
+
+Also there can be lines that you really don't want to receive in your data lake. For this you can use the special filter called '*drop*'. Our advice is to add this on top of your filter configuration. In this scenario dropping application messages that contain 'NAWModule' will do the trick.
+
+For this we received the following mapping.
+
+- Messages from module:HouseKeepingModule must have the Technical application context.
+- Messages from module:RegistrationModule must have the Functional application context.
+- Messages from module:NAWModule have Security context and must be dropped.
+
+```
+
+if [type] == "application" and [message] =~ /NAWModule/ {
+        drop { }
+}       
+
+```
+ 
