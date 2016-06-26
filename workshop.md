@@ -695,6 +695,7 @@ Now that we have a correct input & output defined we can test the configuration 
 
 ```
 $ sudo service logstash configtest
+Configuration OK
 $ sudo service logstash start
 
 ```
@@ -711,5 +712,14 @@ This can be easily done by adding a new file called `/etc/rsyslog.d/logstash.con
 # Save the file and restart the rsyslog service
 $ sudo systemctl restart rsyslog
 ```
+It is time to send your first test message. This can be done with a tool called `logger`.
 
+> Note : Please check your localtime before starting to send a message. Trick to synchronize the time easy is to restart chronyd `sudo systemctl restart chronyd`
 
+```
+$ sudo systemctl restart chronyd
+$ sudo logger -i -p auth.err Hello DevOpsDays
+```
+Notice that you first have to configure your index pattern. Accept defaults and Click 'Apply'  
+
+<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/kibana-ini.png" alt="Kibana initialization">
