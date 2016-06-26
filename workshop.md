@@ -730,14 +730,25 @@ Now the index is shown. You can safely click 'Discover' to search for your event
 
 As you maybe noticed. The facility type we used is exactly the one we have to mask. This masking can be easily done with an if condition and make use of the '*mutate*' filter.
 
-Below the example code for masking the field.Don't forget to first create the file `/etc/logstash/conf.d/500-filter.conf`.
+Below the example code for setting some helpfull information in large environments and finally masking the field.
+
+Don't forget to first create the file `/etc/logstash/conf.d/500-filter.conf`.
 
 ```
 # 500-filter.conf
 
 filter {
+	
+	mutate {
+                # Default configuration for mandatory fields for corporate ELK Solution
+                # log_shipper => Should be the node hostname
+                # log_version => Should be the version of the logstash shipper
+
+                add_field => { "log_indexer" => "datalake"}
+                add_field => { "log_version" => "logstash-2.3.3"}
+        }
 	if [type] == "syslog" {
-		if ([facility] == 4) or ([facility] == 10) {
+		if [facility] == 4 or [facility] == 10 {
 		 	mutate { 
 				replace => { "message" => "Due security policy this message is masked" }
 				add_tag => [ "mask-applied" ]
@@ -771,7 +782,6 @@ Now that we succesfully connected the '*syslog*' messages we can start connectin
 - Setup and validate our required Grok filters.
 - Integrate the new '*filter*' configuration. 
 - We will now test and see our results in Kibana.
-- At last we will create a basic filter to drop particular (NAWModule) messages.
 
 To keep the configuration simple we will extend our current `/etc/logstash/conf.d/000-input.conf` configuration.
 
@@ -819,7 +829,7 @@ Copy the sample message to the **Input field** and the expected pattern to the *
 
 Now that we found the grok pattern to match we can extend our `/etc/logstash/conf.d/500-filter.conf` configuration.
 
-Don't forget that we have to rebuild our timestamp and set our log entry timestamp as event timestamp. As you see this is done with the '*date*' filter.
+Don't forget that we have to rebuild our timestamp (by using the tmp_* fields) and set our log entry timestamp as event timestamp. As you see this is done with the '*date*' filter.
 
 ```
 if [type] == "tomcat" {
@@ -839,5 +849,22 @@ if [type] == "tomcat" {
 }
 ```
 
+Don't forget to `configtest` and `restart` logstash to activate the new configuration.
 
+```
+$ sudo service logstash configtest
+$ sudo service logstash restart
+```
+
+As list item we can test our configuration. For this a generator is available, which is in the DOD-AMS-Workshop package.
+
+```
+$ sudo su -
+# cd /usr/local/src/DOD-AMS-Workshop/generator
+# ./log-generator.py & 
+```
+
+After starting the log-generator open the Kibana Discover dasboard again and search for 'type:tomcat' to show all tomcat type events.
+
+<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/event3.png" alt="event3">
 
