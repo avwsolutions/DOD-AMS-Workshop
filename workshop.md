@@ -804,6 +804,26 @@ As we can see the format is like:
 
 Now that we know the format we can use the [grok-debugger](http://grokdebug.herokuapp.com) to split up the fields.Start a HTML5 compatible browser and follow the screenshot below.
 
+<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/grokdebug.png" alt="grokdebug">
+
+```
+if [type] == "tomcat" {
+                grok {
+                        match => [ "message", "%{MONTHDAY:tmp_mday}-%{MONTH:tmp_month}-%{YEAR:tmp_year} %{TIME:tmp_time} %{LOGLEVEL:appl_loglevel} \[%{DATA:appl_module}\] %{DATA:appl_class} %{GREEDYDATA:appl_message}" ]
+                }
+
+                mutate {
+                        add_field => { "timestamp" => "%{tmp_mday}-%{tmp_month}-%{tmp_year} %{tmp_time}" }
+                        remove_field => [ "tmp_mday","tmp_month","tmp_year","tmp_time" ]
+                }
+
+                date {
+                        match => [ "timestamp", "dd-MMM-yyyy HH:mm:ss.SSS" ]
+                        remove_field => [ "timestamp" ]
+                }
+
+        }
+```
 
 
 
