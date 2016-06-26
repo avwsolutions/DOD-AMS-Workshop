@@ -806,9 +806,14 @@ As we can see the format is like:
 
 <tmp_mday-tmp_month-tmp_year tmp_time> <appl_severity> <appl_module> <appl_class> <appl_message>
 
+#Expected pattern
+
+%{MONTHDAY:tmp_mday}-%{MONTH:tmp_month}-%{YEAR:tmp_year} %{TIME:tmp_time} %{LOGLEVEL:appl_loglevel} \[%{DATA:appl_module}\] %{DATA:appl_class} %{GREEDYDATA:appl_message}
+
 ```
 
-Now that we know the format we can use the [grok-debugger](http://grokdebug.herokuapp.com) to split up the fields.Start a HTML5 compatible browser and follow the screenshot below.
+Now that we know the format, fields to parse out and expected pattern we can use the [grok-debugger](http://grokdebug.herokuapp.com) to split up the fields.Start a HTML5 compatible browser and follow the screenshot below.
+Copy the sample message to the **Input field** and the expected pattern to the **Pattern Field**.
 
 <img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/grokdebug.png" alt="grokdebug">
 
