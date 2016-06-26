@@ -785,6 +785,26 @@ file {
           		pattern => "^\s"
          		what => "previous"
     		}
+		tags => ["tomcat","middleware","logs"]
 }
 ```
+> Note : Did you see the **multiline codec** defined ? This tells logstash how to handle multiline exceptions. In our case all lines that start with a <space> belong to the previous line. This total sum of lines will then be the message which will be stored in the data lake.
+
+Now that we have our log file configured, we can setup the correct parsing. This parsing is usually done with the famous '*grok*' filter.
+Below an sample message in the catalina.log
+
+```
+24-Feb-2016 14:58:21.447 SEVERE [localhost-startStop-2] org.apache.catalina.loader.WebappClassLoader.checkThreadLocalMapForLeaks The web application has shutdown with leaks
+``` 
+As we can see the format is like:
+
+```
+<timestamp> <severity> <module> <class> <message>
+```
+
+Now that we know the format we can use the [grok-debugger](http://grokdebug.herokuapp.com) to split up the fields.Start a HTML5 compatible browser and follow the screenshot below.
+
+
+
+
 
