@@ -720,6 +720,10 @@ It is time to send your first test message. This can be done with a tool called 
 $ sudo systemctl restart chronyd
 $ sudo logger -i -p auth.err Hello DevOpsDays
 ```
-Notice that you first have to configure your index pattern. Accept defaults and Click 'Apply'  
+Notice that you first have to configure your index pattern. Accept defaults and Click 'Create'  
 
 <img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/kibana-ini.png" alt="Kibana initialization">
+
+Now the index is shown. You can safely click 'Discover' to search for your event. See the result below.
+
+<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/event1.png" alt="Event1">
