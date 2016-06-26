@@ -48,7 +48,7 @@ This document contains a series of several sections, each of which explains a pa
 -   [2.0 BankIT Scenario : part1 ](#bankit1)
     -   [2.1 Your first logstash configuration](#basics)
     -   [2.2 Connecting the syslog](#syslog)
-    -   [2.3 Our application logs](#logfile)
+    -   [2.3 Our middleware logs](#logfile)
     -   [2.4 Using grok filtering](#grok)
     -   [2.5 Our first kibana dashboard](#fkibana)
 -  [3.0 Birthday training](#dockercompetition)
@@ -762,5 +762,29 @@ Now again use Discover to see the latest events. Now click on the facility field
 
 <img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/event2.png" alt="Event2">
 
+<a id="logfile"></a>
+## 2.3 Our middleware logs 
 
-authpriv
+Now that we succesfully connected the '*syslog*' messages we can start connecting the Middleware logs. In this section we will setup the parsing of Middleware logs with the '*file*' input.
+
+- Add the configuration for the '*file*' input.
+- Setup and validate our required Grok filters.
+- Integrate the new '*filter*' configuration. 
+- We will now test and see our results in Kibana.
+- At last we will create a basic filter to drop particular (NAWModule) messages.
+
+To keep the configuration simple we will extend our current `/etc/logstash/conf.d/000-input.conf` configuration.
+
+> Note : We aware that this '*file*' input must be included in the existing `input { }` statement.
+
+```
+file {
+   		path => "/var/log/tomcat/catalina.log"
+    		type => "tomcat"
+    		codec => multiline {
+          		pattern => "^\s"
+         		what => "previous"
+    		}
+}
+```
+
