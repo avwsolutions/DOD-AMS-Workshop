@@ -727,3 +727,40 @@ Notice that you first have to configure your index pattern. Accept defaults and 
 Now the index is shown. You can safely click 'Discover' to search for your event. See the result below.
 
 <img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/event1.png" alt="Event1">
+
+As you maybe noticed. The facility type we used is exactly the one we have to mask. This masking can be easily done with an if condition and make use of the '*mutate*' filter.
+
+Below the example code for masking the field.Don't forget to first create the file `/etc/logstash/conf.d/500-filter.conf`.
+
+```
+# 500-filter.conf
+
+filter {
+	if [type] == "syslog" {
+		if ([facility] == 4) or ([facility] == 10) {
+		 	mutate { 
+				replace => { "message" => "Due security policy this message is masked" }
+				add_tag => [ "mask-applied" ]
+		 	}
+		}
+	}
+}
+```
+Don't forget to `configtest` and `restart` logstash. Also send five additional messages.
+
+```
+$ sudo service logstash configtest
+$ sudo service logstash restart
+$ sudo logger -i -p auth.err Hello DevOpsDays
+$ sudo logger -i -p auth.err Hello DevOpsDays
+$ sudo logger -i -p authpriv.err Hello DevOpsDays
+$ sudo logger -i -p authpriv.err Hello DevOpsDays
+$ sudo logger -i Hello DevOpsDays # Normal user facility
+```
+
+Now again use Discover to see the latest events. Now click on the facility field on the left and zoom in on the value '4' messages. Repeat this for the value '10'.
+
+<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/event2.png" alt="Event2">
+
+
+authpriv
