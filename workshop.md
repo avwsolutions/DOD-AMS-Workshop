@@ -647,11 +647,69 @@ output {
 Now start the code by the command below en play with the input [carrot, pizza, beer or other]. Look at the guess field for the response.
 
 ```
-/opt/logstash/bin/logstash  -f /tmp/example
+/opt/logstash/bin/logstash -f /tmp/example
 ```
 
+<a id="syslog"></a>
+## 2.2 Connecting the syslog 
 
+Are you ready for the first real job? In this section we will
 
+- Add the configuration for the '*syslog*' input.
+- Add the main configuration for setting the '*elasticsearch*' output.
+- We will create a `/etc/rsyslog.d/logstash.conf` file to forward all syslog messages.
+- We will now test and see our results in Kibana.
+- At last we will create some basic filters to mask our security (facility 4 & 10) messages.
 
+Start with creating the '*input*' file `/etc/logstash/conf.d/000-input.conf` with the content below.
+
+> Note : That ports up to 1024 are exclusively for system/root usage.
+
+```
+#000-input.conf
+
+input {
+	syslog {
+		port	   => 5014
+		type  	   => "syslog"
+		use_labels => true
+		tags       => ["syslog","operatingsystem","logs"]
+	}
+}
+
+```
+Now create the main '*output*' file `/etc/logstash/conf.d/900-output.conf` with the content below.
+
+```
+#900-output.conf
+
+output {
+	elasticsearch {
+		manage_template => false
+		hosts => ["localhost"]
+		sniffing => true
+	}		
+}
+```
+Now that we have a correct input & output defined we can test the configuration and start the service.
+
+```
+$ sudo service logstash configtest
+$ sudo service logstash start
+
+```
+
+Now that your logstash agent is running it is time to add the rsyslog forward configuration.
+This can be easily done by adding a new file called `/etc/rsyslog.d/logstash.conf`.
+
+```
+#logstash.conf
+
+# Forward all messages to logstash
+*.* @@localhost:5014
+
+# Save the file and restart the rsyslog service
+$ sudo systemctl restart rsyslog
+```
 
 
