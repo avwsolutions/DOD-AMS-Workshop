@@ -49,7 +49,7 @@ This document contains a series of several sections, each of which explains a pa
     -   [2.1 Your first logstash configuration](#basics)
     -   [2.2 Connecting the syslog](#syslog)
     -   [2.3 Our middleware logs](#logfile)
-    -   [2.4 Using grok filtering](#grok)
+    -   [2.4 Application logging & performance](#logperf)
     -   [2.5 Our first kibana dashboard](#fkibana)
 -  [3.0 Birthday training](#dockercompetition)
   - [3.1 Pull voting-app images](#pullimage)
@@ -864,7 +864,75 @@ $ sudo su -
 # ./log-generator.py & 
 ```
 
-After starting the log-generator open the Kibana Discover dasboard again and search for 'type:tomcat' to show all tomcat type events.
+After starting the log-generator open the Kibana Discover dasboard again and search for 'type:tomcat' to show all tomcat type events. Also notice the tomcat events, which have a multiline tag.
 
 <img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/event3.png" alt="event3">
+
+<a id="logperf"></a>
+## 2.4 Application logging & performance
+
+Now that we have created a configuration for our Tomcat Middleware and had some hands-on experience parsing the grok filter, creating the application log monitoring is quite easy.
+
+For the performance log we need to do an important thing,before sending the metric to the data lake.
+
+In short we will do the following things in this section.
+
+- Add the configuration for the '*file*' input.
+- Setup, validate and integrate our required *filters* for application logging.
+- Transform the performance logging with '*filter*' configuration to metric data.
+- Create a solution to handle all unmatched messages and drop all 'NAWModule' messages.
+- Add some additional lines to the code to add the 'application context', which can be '*functional*' or '*technical*'
+- We will now test and see our results in Kibana. 
+
+Again we will use the '*file*' input. Extend our current `/etc/logstash/conf.d/000-input.conf` configuration.
+
+```
+# 000-input.conf
+
+file {
+	path => "/var/log/tomcat/BankIT-application.log"
+    	type => "application"
+    	tags => ["bankit", "application","logs"]
+}
+
+file {
+	path => "/var/log/tomcat/BankIT-performance.log"
+    	type => "performance"
+    	tags => ["bankit","application","metrics"]
+}
+```
+
+Now we have to define the pattern for the grok matching. As seen in the section above you can easily do this online with [grok-debugger](http://grokdebug.herokuapp.com).
+Open the browser and build the pattern yourself. Please use the same field names.
+
+Below an sample message in the BankIT-application.log
+
+```
+26-Jun-2016 20:57:54.728 SEVERE [NAWModule] com.openbank.bankit.NAWModule.Update John Doe record updated with Flevostraat 100, Purmerend
+```
+
+Now that you have the pattern discovered you can implement the code below. please extend our current `/etc/logstash/conf.d/500-filter.conf` configuration.
+
+
+```
+if [type] == "application" {
+                grok {
+                        match => [ "message", "%{MONTHDAY:tmp_mday}-%{MONTH:tmp_month}-
+%{YEAR:tmp_year} %{TIME:tmp_time} %{LOGLEVEL:appl_loglevel} \[%{DATA:appl_module}\] %{D
+ATA:appl_class} %{GREEDYDATA:appl_message}" ]
+                }
+		
+                mutate {
+                        add_field => { "timestamp" => "%{tmp_mday}-%{tmp_month}-%{tmp_y
+ear} %{tmp_time}" }
+                        remove_field => [ "tmp_mday","tmp_month","tmp_year","tmp_time" 
+]
+                }
+
+                date {
+                        match => [ "timestamp", "dd-MMM-yyyy HH:mm:ss.SSS" ]
+                        remove_field => [ "timestamp" ]
+                }
+	}
+```
 
