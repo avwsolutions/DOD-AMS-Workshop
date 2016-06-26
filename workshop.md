@@ -799,12 +799,22 @@ Below an sample message in the catalina.log
 As we can see the format is like:
 
 ```
+# Format
 <timestamp> <severity> <module> <class> <message>
+
+# Fields to parse out.
+
+<tmp_mday-tmp_month-tmp_year tmp_time> <appl_severity> <appl_module> <appl_class> <appl_message>
+
 ```
 
 Now that we know the format we can use the [grok-debugger](http://grokdebug.herokuapp.com) to split up the fields.Start a HTML5 compatible browser and follow the screenshot below.
 
 <img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/grokdebug.png" alt="grokdebug">
+
+Now that we found the grok pattern to match we can extend our `/etc/logstash/conf.d/500-filter.conf` configuration.
+
+Don't forget that we have to rebuild our timestamp and set our log entry timestamp as event timestamp. As you see this is done with the '*date*' filter.
 
 ```
 if [type] == "tomcat" {
@@ -821,10 +831,8 @@ if [type] == "tomcat" {
                         match => [ "timestamp", "dd-MMM-yyyy HH:mm:ss.SSS" ]
                         remove_field => [ "timestamp" ]
                 }
-
-        }
+}
 ```
-
 
 
 
