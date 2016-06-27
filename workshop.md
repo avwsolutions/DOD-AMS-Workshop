@@ -980,7 +980,7 @@ if [type] == "performance" {
 Now that we added all grok matches (we know), what will happen with all unmatched messages ?
 These messages will pass by, but will not be parsed, neither enriched. But for handling these messages (with _grokparsefailure tag) we can implement a small solution to replace the message or add an additional header.
 
-In this scenario we will add an additional header in front of the original message using the '*mutate*' filter. Always put this at the end of your filter definitions.
+In this scenario we will add an additional header in front of the original message using the '*mutate*' filter. Always put this at the end of your filter definitions, which in our case is `/etc/logstash/conf.d/500-filter.conf` file.
 
 ```
 
@@ -1003,7 +1003,7 @@ For this we received the following mapping.
 - Messages from module:NAWModule have Security context and must be dropped.
 
 First we create two *if* statements on the '*appl_module*' value (HouseKeepingModule or RegistrationModule) to add an addtional field '*appl_context*' with either *Technical* or *Functional*.
-Be aware that you put this within the application (if) statement and after the grok filter (otherwise the '*appl_module*' is not yet available).
+Be aware that you put this in the `/etc/logstash/conf.d/500-filter.conf` within the type:application (if) statement and after the grok filter (otherwise the '*appl_module*' field is not yet available).
 
 ```
 # grok filter
@@ -1023,8 +1023,9 @@ if [appl_module] =~ /RegistrationModule/ {
 # mutate filter
 ```
 
-To drop specific received messages you can use the special filter called '*drop*'. Our advice is to add this on top of your filter configuration to minimize processing. In this scenario dropping application messages that contain 'NAWModule' will do the trick.
-Our advice is to add this on top of your filter configuration
+To drop specific received messages you can use the special filter called '*drop*'. In this scenario dropping application messages that contain 'NAWModule' will do the trick.
+
+Our advice is to add this on top of your filter configuration (`/etc/logstash/conf.d/500-filter.conf`) to minimize processing of unwanted events.
 
 ```
 
