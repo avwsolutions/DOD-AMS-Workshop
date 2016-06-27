@@ -1120,5 +1120,13 @@ BankIT Business Performance | Vertical bar chart | BankIT Claims Performance| Av
 BankIT Functional Messages | Pie Chart | BankIT Functional messsages| Aggregation => Count| Split Slices => Aggregation => Terms:appl_loglevel,Split Slices => Sub Aggregation => Terms:appl_class
 BankIT Technical Messages | Pie Chart | BankIT Technical messsages | Aggregation => Count | Split Slices Aggregation => Terms:appl_loglevel,Split Slices => Sub Aggregation => Terms:appl_class
 BankIT Unknown Pattern | Vertical bar Chart | BankIT Grok Parser Failed | Aggregation => Count | X-Axis => Aggregation => Data Histogram
-BankIT Tomcat Messages over Time| Area Chart | BankIT Tomcat Events | Aggregation => Count | X-Axis => Aggregation => Date Histogram,Split Area => Sub Aggregation => 3 Filters(*, exception, error)
-BankIT Hourly Trend Analysis - Functionality | Data Table | BankIT All | Aggregation => Count | Split Rows => Aggregation Date Range => Ranges = today last hour (now - 1h till now) + yesterday last hour(now-25h till now-24h), Split Rows => sub aggregation => Filters("type=application AND appl_context=Functional", "type=performance")
+BankIT Middleware Messages over Time| Area Chart | BankIT Middleware Events | Aggregation => Count | X-Axis => Aggregation => Date Histogram,Split Area => Sub Aggregation => 3 Filters(*, exception, error)
+BankIT Hourly Trend Analysis - Functionality | Data Table | BankIT All | Aggregation => Count | Split Rows => Aggregation => Date Range => Ranges = today last hour (now - 1h till now) + yesterday last hour(now-25h till now-24h), Split Rows => sub aggregation => 2 Filters("type=application AND appl_context=Functional", "type=performance")
+BankIT Hourly Trend Analysis - Middleware| Data Table | BankIT Middleware Events | Aggregation => Count | Split Rows => Aggregation => Date Range => Ranges = today last hour (now - 1h till now) + yesterday last hour(now-25h till now-24h), Split Rows => sub aggregation => 3 Filters("exception", "warning","severe")
+BankIT Total Exceptions | Metric| BankIT Middleware Exceptions| Aggregation => Count| n.a.
+BankIT OperatingSystem Facilities for each severity over time | Vertical bar chart | BankIT Operating System Events | Aggregation => Count | X-Axis => Aggregation => Date Histogram,Split Bars => Sub Aggregation => Terms => facility_label, Split Chart => Sub Aggregation => terms => severity_label
+
+
+
+
+
