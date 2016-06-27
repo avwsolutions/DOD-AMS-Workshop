@@ -54,7 +54,7 @@ This document contains a series of several sections, each of which explains a pa
 -   [3.0 BankIT Scenario : part2 ](#bankit2)
     - [3.1 Install & configure Collectd](#collectd)
     - [3.2 Application performance metrics to Graphite](#grapmet)
-    - [3.3 Our first grafana dashboard]#grafana)
+    - [3.3 Our first grafana dashboard](#grafana)
 -   [4.0 BankIT Scenario : part3 ](#bankit3)
     - [4.1 Install & configure Kafka](#kafka)
     - [4.2 Create your Kafka Logstash configuration](#logkaf)
@@ -1211,5 +1211,33 @@ Now open your local [Graphite-web](http://localhost:9080) page to check if Colle
 
 <a id="grapmet"></a>
 ### 3.2 Application performance metrics to Graphite
- 
+
+First a small introduction to Graphite. Graphite has two methods to send data over.
+- Plaintext protocol (one by one)
+- Pickle protocol (more in a Tuple), which offcourse is more efficient.
+
+Plaintext protocol only requires three parameters to send over.
+Parameters are:
+- **Metric name or class path**, in our case we will use '*bankit.metrics.*'
+- **Metric value**, which must be an integer or float. 
+- **Time value**, which is seconds (Epoch time) since 01-01-1970, see output `date +%s`
+
+Now send some test metrics with just a simple one liner
+```
+$ sudo echo "my.dod-ams 2016 $(date +%s)" > /dev/tcp/localhost/2003 
+```
+Open your '*graphite-web*' and see if your metric name is showing up.
+
+Now we are ready to send some metrics to our Graphite instance. Since Alex already created a Python script we will use this for generating metric events. 
+This generator is available, which is in the DOD-AMS-Workshop package.
+
+```
+$ sudo su -
+# cd /usr/local/src/DOD-AMS-Workshop/generator
+# ./metric-generator.py &
+```
+
+After starting the metric-generator open the '*graphite-web*' again and drill down to the metrics to show the graph . 
+
+<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/metrics1.png" alt="metrics1">
 
