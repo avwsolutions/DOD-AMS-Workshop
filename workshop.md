@@ -919,16 +919,12 @@ Now that you have discovered the pattern you can implement the code below. pleas
 ```
 if [type] == "application" {
                 grok {
-                        match => [ "message", "%{MONTHDAY:tmp_mday}-%{MONTH:tmp_month}-
-%{YEAR:tmp_year} %{TIME:tmp_time} %{LOGLEVEL:appl_loglevel} \[%{DATA:appl_module}\] %{D
-ATA:appl_class} %{GREEDYDATA:appl_message}" ]
+                        match => [ "message", "%{MONTHDAY:tmp_mday}-%{MONTH:tmp_month}-%{YEAR:tmp_year} %{TIME:tmp_time} %{LOGLEVEL:appl_loglevel} \[%{DATA:appl_module}\] %{DATA:appl_class} %{GREEDYDATA:appl_message}" ]
                 }
 		
                 mutate {
-                        add_field => { "timestamp" => "%{tmp_mday}-%{tmp_month}-%{tmp_y
-ear} %{tmp_time}" }
-                        remove_field => [ "tmp_mday","tmp_month","tmp_year","tmp_time" 
-]
+                        add_field => { "timestamp" => "%{tmp_mday}-%{tmp_month}-%{tmp_year} %{tmp_time}" }
+                        remove_field => [ "tmp_mday","tmp_month","tmp_year","tmp_time" ]
                 }
 
                 date {
