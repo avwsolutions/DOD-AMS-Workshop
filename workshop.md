@@ -52,12 +52,12 @@ This document contains a series of several sections, each of which explains a pa
     -   [2.4 Application logging & performance](#logperf)
     -   [2.5 Our first kibana dashboard](#fkibana)
 -   [3.0 BankIT Scenario : part2 ](#bankit2)
-    - [3.1 Install & configure collectd](#collectd)
-    - [3.2 Application performance metrics to graphite](#graphite)
+    - [3.1 Install & configure Collectd](#collectd)
+    - [3.2 Application performance metrics to Graphite](#graphite)
     - [3.3 Our first grafana dashboard]#grafana)
 -   [4.0 BankIT Scenario : part3 ](#bankit3)
-    - [4.1 Install & configure kafka](#kafka)
-    - [4.2 Create your kafka logstash configuration](#logkaf)
+    - [4.1 Install & configure Kafka](#kafka)
+    - [4.2 Create your Kafka Logstash configuration](#logkaf)
     - [4.3 Direct application logging through Java workers] (#directlog)
 -  [References](#references)
 
@@ -1133,5 +1133,96 @@ You can use the below screenshot as example to order all '*Visualizations*'.
 
 <img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/bankitdashboard.png" alt="KibanaDashboard">
 
+<a id="bankit2"></a>
+## 3.0 BankIT Scenario : part2
 
+Two weeks after you successfully launched the ELK stack in Production you got overwhelmed with positive feedback. All your ITOps colleagues use the dashboard for solving incidents and analysing the system behaviour. Also the Developers like the approach, but they want to see more metrics related to their application performance. Lead developer Alex already created a Python script for that.
+
+Ben, who is responsible for the performance and capacity wants to keep more data. Also he is missing an overall view of the system metrics like CPU, Memory and storage.
+
+In your previous job you've used Graphite for these tasks. You know about the simple integration with Collectd and the great render API.
+
+You discussed these new requirements with Kenny, who is the Product Owner. Kenny agreed to add new functionality to the current sprint.
+
+**Below the functional needs:**
+
+- All System statistics (such as CPU, Memory and storage) must be availabe for dashboarding & reporting.
+- Developers must be able to send their metrics to your Graphite instance.
+- Grafana dashboard must be available for BankIT Performance & Capacity reporting.
+
+<a id="collectd"></a>
+### 3.1 Install & configure Collectd 
+
+> Note : Elastic also has a great set of agents available for this task, called [Beats](https://www.elastic.co/products/beats). You must certain evaluate this at home, but is not part of this workshop. 
+
+It is time to start collecting metrics. In this simple exercise we will install Collectd from the Epel repository and we will configure it to send the metrics to you local Graphite instance.
+
+See the commands below for installing and configuring your Collectd engine.
+
+```
+$ sudo yum -y install collectd 
+```
+
+Now we are ready for configuring our collect.d Graphite configuration.
+
+```
+#graphite.conf
+
+LoadPlugin write_graphite
+<Plugin write_graphite>
+  <Node "datalake">
+    Host "localhost"
+    Port "2003"
+    Protocol "tcp"
+    LogSendErrors true
+    Prefix "collectd"
+    Postfix "collectd"
+    StoreRates true
+    AlwaysAppendDS false
+    EscapeCharacter "_"
+  </Node>
+</Plugin>
+```
+Also you can add you localdisk monitoring configuration.
+
+```
+#df.conf
+
+LoadPlugin df
+<Plugin df>
+	Device "/dev/mapper/centos_datalake-root"
+	MountPoint "/"
+	FSType "xfs"
+	IgnoreSelected false
+	ReportByDevice false
+	ReportInodes true 
+	ValuesAbsolute true
+	ValuesPercentage false
+</Plugin>
+
+```
+```
+# additionals.conf
+
+# Default loaded : cpu, memory, load, interface
+LoadPlugin entropy
+LoadPlugin processes
+LoadPlugin users 
+
+Now we can configure the service configuration. Notice it is using systemd.
+
+```
+
+Now create these files in the `/etc/collectd.d/` directory.
+
+After that you can start the '*collectd*' service.
+
+
+```
+$ sudo systemctl daemon-reload
+$ sudo systemctl enable collectd.service
+$ sudo systemctl start collectd.service
+```
+
+ 
 
