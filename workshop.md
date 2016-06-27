@@ -1097,10 +1097,21 @@ BankIT Application All | type:application AND tags:"bankit"
 BankIT Functional Messages | type:application AND tags:"bankit" AND appl_context:Functional
 BankIT Technical Messages | type:application AND tags:"bankit" AND appl_context:Technical
 BankIT Grok Parser Failed | type:application AND tags:"bankit" AND _grokparsefailure
-BankIT Middleware Events | type:tomcat AND tags:"bankit"
-BankIT Middleware Warnings | type:tomcat AND tags:"bankit" AND warning
-BankIT Middleware Errors | type:tomcat AND tags:"bankit" AND error
-BankIT Middleware Exceptions | type:tomcat AND tags:"bankit" AND Exception
+BankIT Middleware Events | type:tomcat AND tags:"middleware"
+BankIT Middleware Warnings | type:tomcat AND tags:"middleware" AND warning
+BankIT Middleware Errors | type:tomcat AND tags:"middleware" AND error
+BankIT Middleware Exceptions | type:tomcat AND tags:"middleware" AND Exception
+BankIT Operating System Events | type:syslog AND tags:"operatingsystem"
+
+#### Visualize
+Now that all the datasets are discovered and saved as Searches we can start creating the visualization layer by choosing the correct Visualizations and their underlying Metric(s) and Bucket(s).
+The easiest way to learn the various Visualizations with their metric and bucket possibilities is just to experiment with them by using a familiar dataset.  It’s not hard, but needs some attention.
+
+Now we are two steps behind the dashboard.
+
+First look at this instruction video and then create the following Visualizations.
+
+<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/create_viz.gif" alt="CreateViz">
 
 
 
