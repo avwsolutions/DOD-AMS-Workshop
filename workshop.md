@@ -195,7 +195,7 @@ Add the uncommented line to the YML file.
 # Set the bind address to a specific IP (IPv4 or IPv6):
 #
 # network.host: 192.168.0.1
-**network.host: localhost**
+network.host: localhost
 #
 # Set a custom port for HTTP:
 #
@@ -906,7 +906,7 @@ file {
 ```
 
 Now we have to define the pattern for the grok matching. As seen in the section above you can easily do this online with [grok-debugger](http://grokdebug.herokuapp.com).
-Open the browser and build the pattern yourself. Please use the same field names.
+Open the browser and build the pattern yourself. Please use the same field names as in the section above.
 
 Below an sample message in the BankIT-application.log
 
@@ -914,7 +914,7 @@ Below an sample message in the BankIT-application.log
 26-Jun-2016 20:57:54.728 SEVERE [NAWModule] com.openbank.bankit.NAWModule.Update John Doe record updated with Flevostraat 100, Purmerend
 ```
 
-Now that you have the pattern discovered you can implement the code below. please extend our current `/etc/logstash/conf.d/500-filter.conf` configuration. As you see below we also set the correct timestamp again.
+Now that you have discovered the pattern you can implement the code below. please extend our current `/etc/logstash/conf.d/500-filter.conf` configuration. As you see below we also set the correct timestamp again.
 
 ```
 if [type] == "application" {
