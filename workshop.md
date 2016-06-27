@@ -1121,4 +1121,4 @@ BankIT Functional Messages | Pie Chart | BankIT Functional messsages| Aggregatio
 BankIT Technical Messages | Pie Chart | BankIT Technical messsages | Aggregation => Count | Aggregation => Terms:appl_loglevel, Sub Aggregation => Terms:appl_class
 BankIT Unknown Pattern | Vertical bar Chart | BankIT Grok Parser Failed | Aggregation => Count | Aggregation => Data Histogram
 BankIT Tomcat Messages over Time| Area Chart | BankIT Tomcat Events | Aggregation => Count | Aggregation => Date Histogram,  Sub Aggregation => Filters(3)
-BankIT Hourly Trend Analysis - Functionality | Metric | BankIT All | Aggregation => Count | Aggregation Date => Range = today + yesterday hourly, sub aggregation => Filters(2)
+BankIT Hourly Trend Analysis - Functionality | Data Table | BankIT All | Aggregation => Count | Split Rows => Aggregation Date Range => Ranges = today last hour (now - 1h till now) + yesterday last hour(now-25h till now-24h), Split Rows => sub aggregation => Filters("type=application AND appl_context=Functional", "type=performance")
