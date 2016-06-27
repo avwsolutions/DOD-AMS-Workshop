@@ -1212,7 +1212,9 @@ Now open your local [Graphite-web](http://localhost:9080) page to check if Colle
 <a id="grapmet"></a>
 ### 3.2 Application performance metrics to Graphite
 
-First a small introduction to Graphite. Graphite has two methods to send data over.
+First a small introduction in sending metric data to Graphite.Data itself is send over to the Carbon Relay and stored in a Whisper data file. This is the most common situation,but for scaling other implementations exist (like carbon-relay.go, carbon-c-relay, writing to InfluxDB or Cassandra backend)
+
+Graphite has two methods to send data over.
 - Plaintext protocol (one by one)
 - Pickle protocol (more in a Tuple), which offcourse is more efficient.
 
@@ -1230,6 +1232,8 @@ Open your '*graphite-web*' and see if your metric name is showing up.
 
 Now we are ready to send some metrics to our Graphite instance. Since Alex already created a Python script we will use this for generating metric events. 
 This generator is available, which is in the DOD-AMS-Workshop package.
+
+> Note : Template scripts can be found [here](http://graphite.readthedocs.io/en/latest/tools.html)
 
 ```
 $ sudo su -
