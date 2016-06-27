@@ -53,7 +53,7 @@ This document contains a series of several sections, each of which explains a pa
     -   [2.5 Our first kibana dashboard](#fkibana)
 -   [3.0 BankIT Scenario : part2 ](#bankit2)
     - [3.1 Install & configure Collectd](#collectd)
-    - [3.2 Application performance metrics to Graphite](#graphite)
+    - [3.2 Application performance metrics to Graphite](#grapmet)
     - [3.3 Our first grafana dashboard]#grafana)
 -   [4.0 BankIT Scenario : part3 ](#bankit3)
     - [4.1 Install & configure Kafka](#kafka)
@@ -720,6 +720,7 @@ It is time to send your first test message. This can be done with a tool called 
 $ sudo systemctl restart chronyd
 $ sudo logger -i -p auth.err Hello DevOpsDays
 ```
+Open your local [Kibana](http://localhost:5601).
 Notice that you first have to configure your index pattern. Accept defaults and Click 'Create'  
 
 <img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/kibana-ini.png" alt="Kibana initialization">
@@ -1183,24 +1184,8 @@ LoadPlugin write_graphite
   </Node>
 </Plugin>
 ```
-Also you can add you localdisk monitoring configuration.
+Also you can add additional monitoring configuration.
 
-```
-#df.conf
-
-LoadPlugin df
-<Plugin df>
-	Device "/dev/mapper/centos_datalake-root"
-	MountPoint "/"
-	FSType "xfs"
-	IgnoreSelected false
-	ReportByDevice false
-	ReportInodes true 
-	ValuesAbsolute true
-	ValuesPercentage false
-</Plugin>
-
-```
 ```
 # additionals.conf
 
@@ -1208,21 +1193,23 @@ LoadPlugin df
 LoadPlugin entropy
 LoadPlugin processes
 LoadPlugin users 
-
-Now we can configure the service configuration. Notice it is using systemd.
-
+LoadPlugin df
 ```
-
 Now create these files in the `/etc/collectd.d/` directory.
 
+ow we can configure the service configuration. Notice it is using systemd.
 After that you can start the '*collectd*' service.
-
 
 ```
 $ sudo systemctl daemon-reload
 $ sudo systemctl enable collectd.service
 $ sudo systemctl start collectd.service
 ```
+Now open your local [Graphite-web](http://localhost:9080) page to check if Collectd is correctly sending metrics to Graphite.
 
+<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/graphiteweb.png" alt="graphiteweb">
+
+<a id="grapmet"></a>
+### 3.2 Application performance metrics to Graphite
  
 
