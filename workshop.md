@@ -1104,7 +1104,7 @@ BankIT Middleware Exceptions | type:tomcat AND tags:"middleware" AND Exception
 BankIT Operating System Events | type:syslog AND tags:"operatingsystem"
 
 #### Visualize
-Now that all the datasets are discovered and saved as Searches we can start creating the visualization layer by choosing the correct Visualizations and their underlying Metric(s) and Bucket(s).
+Now that all the datasets are discovered and saved as Searches we can start creating the visualization layer by choosing the correct *Visualizations* and their underlying *Metric(s)* and *Bucket(s)*.
 The easiest way to learn the various Visualizations with their metric and bucket possibilities is just to experiment with them by using a familiar dataset.  It’s not hard, but needs some attention.
 
 Now we are two steps behind the dashboard.
@@ -1113,6 +1113,61 @@ First look at this instruction video and then create the following Visualization
 
 <img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/create_viz.gif" alt="CreateViz">
 
+Viz Name | Viz Type | Search | Metric | Bucket(s)
+---------|----------|--------|--------|----------
+BankIT Application messages over time | Line chart | BankIT Application all | Count | Aggregation
+       										      Date Histogram
+										      Sub Aggregation
+										      Filters (3)
+BankIT Business Performance | Vertical bar chart | BankIT Claims Performance| Average
+									      performance_value | Aggregation
+                                                                              Date Histogram
+
+
+
+BankIT Functional Messages
+Pie Chart
+BankIT Functional messsages
+Aggregation
+Count
+Aggregation
+Terms:appl_loglevel
+Sub Aggregation
+Terms:appl_class
+BankIT Technical Messages
+Pie Chart
+BankIT Technical messsages
+Aggregation
+Count
+Aggregation
+Terms:appl_loglevel
+Sub Aggregation
+Terms:appl_class
+BankIT Data Mask Status
+Vertical bar Chart
+BankIT Grok Parser Failed
+Aggregation
+Count
+Aggregation
+Data Histogram
+BankIT Catalina Messages over Time
+Area Chart
+BankIT Catalina Events
+Count
+Aggregation
+Date Histogram
+Sub Aggregation
+Filters(3)
+BankIT Hourly Trend Analysis - Functionality
+Metric
+BankIT All
+Aggregation
+Count
+Aggregation
+Date Range
+today + yesterday hourly
+Sub Aggregation
+Filters(2)
 
 
 
