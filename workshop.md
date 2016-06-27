@@ -1134,7 +1134,7 @@ First look at this instruction video and then create a dashboard.
 
 You can use the below screenshot as example to order all '*Visualizations*'.
 
-<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/bankitdashboard.gif" alt="KibanaDashboard">
+<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/bankitdashboard.png" alt="KibanaDashboard">
 
 
 
