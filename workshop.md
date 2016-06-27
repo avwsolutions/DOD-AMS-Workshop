@@ -1049,4 +1049,24 @@ $ sudo su -
 # cd /usr/local/src/DOD-AMS-Workshop/generator
 # ./log-generator.py &
 ```
-After starting the log-generator open the Kibana Discover dasboard again and search for 'type:application' to show all application type events.Repeat the same for the 'type:performance' events. 
+After starting the log-generator open the Kibana Discover dasboard again and search for 'type:application' to show all application type events.
+
+<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/event4.png" alt="event4">
+
+Repeat the same for the 'type:performance' events.
+
+<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/event5.png" alt="event5">
+
+Now notice all the yellow exclamation marks. This means that some fields are not default mapped in your index scheme. To save your new scheme, go to *Settings -> Indices*, click on the Index pattern '*logstash-\**' and click the orange *refresh button*.
+
+<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/event6.png" alt="event6">  
+
+After the refresh lookup the '*performance_value*' field and notice that it is default mapped to a type of Number (i.e. Integer).
+
+<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/event7.png" alt="event7">
+
+You can now edit the field definition and set the formatting mandatory to number, which will force the formatting displayed in Kibana. Now open a performance type event and look at the field, this now will show the *#* which is indicating a number value instead of a string *t*.
+
+<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/event8.png" alt="event8"> 
+
+ 
