@@ -1089,7 +1089,18 @@ First look at this instruction video and then create the following Searches.
 Search Name   		| Search Query 
 ------------------------|-------------
 BankIT All   		| tags:"bankit" 
-Content Cell  		| Content Cell
+BankIT Claims Performance | type:performance AND tags:"bankit" AND appl_module:claims
+BankIT Application Severe | type:application AND tags:"bankit" AND severe
+BankIT Application Error  | type:application AND tags:"bankit" AND error
+BankIT Application Warning | type:application AND tags:"bankit" AND warning
+BankIT Application All | type:application AND tags:"bankit"
+BankIT Functional Messages | type:application AND tags:"bankit" AND appl_context:Functional
+BankIT Technical Messages | type:application AND tags:"bankit" AND appl_context:Technical
+BankIT Grok Parser Failed | type:application AND tags:"bankit" AND _grokparsefailure
+BankIT Middleware Events | type:tomcat AND tags:"bankit"
+BankIT Middleware Warnings | type:tomcat AND tags:"bankit" AND warning
+BankIT Middleware Errors | type:tomcat AND tags:"bankit" AND error
+BankIT Middleware Exceptions | type:tomcat AND tags:"bankit" AND Exception
 
 
 
