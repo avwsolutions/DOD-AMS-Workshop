@@ -1233,7 +1233,7 @@ Open your '*graphite-web*' and see if your metric name is showing up.
 Now we are ready to send some metrics to our Graphite instance. Since Alex already created a Python script we will use this for generating metric events. 
 This generator is available, which is in the DOD-AMS-Workshop package.
 
-> Note : Template scripts can be found [here](http://graphite.readthedocs.io/en/latest/tools.html)
+> Note : Tools and extensions can be found [here](http://graphite.readthedocs.io/en/latest/tools.html)
 
 ```
 $ sudo su -
@@ -1245,3 +1245,18 @@ After starting the metric-generator open the '*graphite-web*' again and drill do
 
 <img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/metrics1.png" alt="metrics1">
 
+<a id="grafana"></a>
+### 3.3 Our first grafana dashboard
+
+Since we have started our metric-generator it is time to configure our Grafana instance. Grafana is a clone from Kibana and evolved in a mature dashboard application for metric data.
+
+In this chapter we will 
+- Configure our data sources, which will be Graphite and Elasticsearch.
+- Create our dashboard with all required information.
+
+First we will configure our data sources. Since version 2.5 we can also connect Elasticsearch datasources. This is very cool, since we have one metric (performance_value) available.
+
+First open your local [grafana](http://localhost:3000) instance.
+
+
+ 
