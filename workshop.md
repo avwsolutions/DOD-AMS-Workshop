@@ -161,7 +161,7 @@ $ sudo su -
 ```
 
 <a id="elasticsearch"></a>
-## 1.1 Install & configure Elasticsearch
+### 1.1 Install & configure Elasticsearch
 
 > Note : Elastic recommends using Oracle Java over OpenJDK. In this workshop we will use OpenJDK which also is supported.
 
@@ -227,7 +227,7 @@ $ sudo systemctl start elasticsearch.service
 ```
 
 <a id="logstash"></a>
-## 1.2 Install & configure Logstash 
+### 1.2 Install & configure Logstash 
 
 > Note : Be aware that for this task internet connectivity is needed. For convenience the Elastic repository is configured and there is already a cache yum download available.
 
@@ -245,7 +245,7 @@ $ sudo systemctl enable logstash.service
 ```
 
 <a id="kibana"></a>
-## 1.3 Install & configure Kibana
+### 1.3 Install & configure Kibana
 
 > Note : Be aware that for this task internet connectivity is needed. For convenience the Elastic repository is configured and there is already a cache yum download available.
 
@@ -280,7 +280,7 @@ $ sudo systemctl start kibana.service
 ```
 
 <a id="graphite"></a>
-## 1.4 Install & configure Graphite
+### 1.4 Install & configure Graphite
 
 > Note : Be aware that for this task internet connectivity is needed. For convenience the Epel repository is configured and there is already a cache yum download available.
 
@@ -528,7 +528,7 @@ $ sudo systemctl start carbon-cache
 ```
 
 <a id="grafana"></a>
-## 1.5 Install & configure Grafana
+### 1.5 Install & configure Grafana
 
 > Note : Be aware that for this task internet connectivity is needed. For convenience the Grafana repository is configured and there is already a cache yum download available.
 
@@ -580,7 +580,7 @@ in this part of the scenario we have to gather the events from the Middleware an
 - All messages that not match a pattern must be traceable for optimalization.
 
 <a id="basics"></a>
-## 2.1 Your first logstash configuration 
+### 2.1 Your first logstash configuration 
 
 Now it is finally time to play around with logstash. If you never used logstash, these excercises are there to be familiar with the syntax. Otherwise skip this section and start at <a href="#syslog" class="syslog" id="basics">2.2 Connecting the syslog</a>
 
@@ -654,7 +654,7 @@ Now start the code by the command below en play with the input [carrot, pizza, b
 ```
 
 <a id="syslog"></a>
-## 2.2 Connecting the syslog 
+### 2.2 Connecting the syslog 
 
 Are you ready for the first real job? In this section we will
 
@@ -777,7 +777,7 @@ Now again use Discover to see the latest events. Now click on the facility field
 <img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/event2.png" alt="Event2">
 
 <a id="logfile"></a>
-## 2.3 Our middleware logs 
+### 2.3 Our middleware logs 
 
 Now that we succesfully connected the '*syslog*' messages we can start connecting the Middleware logs. In this section we will setup the parsing of Middleware logs with the '*file*' input.
 
@@ -872,7 +872,7 @@ After starting the log-generator open the Kibana Discover dasboard again and sea
 <img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/event3.png" alt="event3">
 
 <a id="logperf"></a>
-## 2.4 Application logging & performance
+### 2.4 Application logging & performance
 
 Now that we have created a configuration for our Tomcat Middleware and had some hands-on experience parsing the grok filter, creating the application log monitoring is quite easy.
 
@@ -1069,4 +1069,29 @@ You can now edit the field definition and set the formatting mandatory to number
 
 <img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/event8.png" alt="event8"> 
 
- 
+<a id="fkibana"></a>
+### 2.5 Our first kibana dashboard
+
+Now that we have finished the logstash part we can create the actual dashboard. With Kibana 4 many new visualizations are introduced to explore your data. But also the concepts and approach to configure dashboards is really changed.
+Below we will walk through the Three Configuration stages to make a simple dashboard.
+
+#### Discover
+The first phase is *Discover*. In this phase you will explore the data and create your data sets (aka Searches), which you will use later in the dashboards or visualizations.
+
+Data querying is easy. It is based on the Lucene® engine and accepts full text search. In the previous sections you already did some specific field/value queries, like '*type:application*'. You can also combine the queries with AND/OR statements.
+
+To create the awesome dashboard we need x saved Searches.
+
+First look at this instruction video and then create the following Searches.
+
+<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/create_search.gif" alt="CreateSearch">
+
+Search Name   		| Search Query 
+------------------------|-------------
+BankIT All   		| tags:"bankit" 
+Content Cell  		| Content Cell
+
+
+
+
+
