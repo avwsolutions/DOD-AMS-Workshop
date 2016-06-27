@@ -1218,7 +1218,7 @@ First a small introduction to Graphite. Graphite has two methods to send data ov
 
 Plaintext protocol only requires three parameters to send over.
 Parameters are:
-- **Metric name or class path**, in our case we will use '*bankit.metrics.*'
+- **Metric name or class path**, in our case we will use '*app.bankit.prod.*'
 - **Metric value**, which must be an integer or float. 
 - **Time value**, which is seconds (Epoch time) since 01-01-1970, see output `date +%s`
 
