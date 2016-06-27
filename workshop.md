@@ -934,7 +934,7 @@ if [type] == "application" {
 	}
 ```
 
-Since most of the information that we gathered is logging, it doesn't mean that we can save some metrics to enrich a dashboard. To do this correctly we have to make sure we commit our field value in the correct format, which is an *Integer*. Default a field is parsed out with **grok** or **kv** as *String*, but with strings we can't create an histogram over time.
+Since most of the information that we gathered is logging, it doesn't mean that we can save some metrics to enrich a dashboard. To do this correctly we have to make sure we commit our field value in the correct format, which is an *Integer*. Default a field is parsed out with **grok** or **kv** as *String*, but with strings we can't create a histogram over time.
 
 > Note : Also be aware that the first entry of an attribute in elasticsearch will define the datatype.
 
