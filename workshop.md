@@ -1124,7 +1124,7 @@ BankIT Middleware Messages over Time| Area Chart | BankIT Middleware Events | Ag
 BankIT Hourly Trend Analysis - Functionality | Data Table | BankIT All | Aggregation => Count | Split Rows => Aggregation => Date Range => Ranges = today last hour (now - 1h till now) + yesterday last hour(now-25h till now-24h), Split Rows => sub aggregation => 2 Filters("type=application AND appl_context=Functional", "type=performance")
 BankIT Hourly Trend Analysis - Middleware| Data Table | BankIT Middleware Events | Aggregation => Count | Split Rows => Aggregation => Date Range => Ranges = today last hour (now - 1h till now) + yesterday last hour(now-25h till now-24h), Split Rows => sub aggregation => 3 Filters("exception", "warning","severe")
 BankIT Total Exceptions | Metric| BankIT Middleware Exceptions| Aggregation => Count| n.a.
-BankIT OperatingSystem Facilities for each severity over time | Vertical bar chart | BankIT Operating System Events | Aggregation => Count | X-Axis => Aggregation => Date Histogram,Split Bars => Sub Aggregation => Terms => facility_label, Split Chart => Sub Aggregation => terms => severity_label
+BankIT OperatingSystem Facilities shown by Severity over time | Vertical bar chart | BankIT Operating System Events | Aggregation => Count | X-Axis => Aggregation => Date Histogram,Split Bars => Sub Aggregation => Terms => facility_label, Split Chart => Sub Aggregation => terms => severity_label
 
 
 
