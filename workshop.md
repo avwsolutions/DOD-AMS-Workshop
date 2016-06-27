@@ -1115,13 +1115,8 @@ First look at this instruction video and then create the following Visualization
 
 Viz Name | Viz Type | Search | Metric | Bucket(s)
 ---------|----------|--------|--------|----------
-BankIT Application messages over time | Line chart | BankIT Application all | Count | Aggregation
-       										      Date Histogram
-										      Sub Aggregation
-										      Filters (3)
-BankIT Business Performance | Vertical bar chart | BankIT Claims Performance| Average
-									      performance_value | Aggregation
-                                                                              Date Histogram
+BankIT Application messages over time | Line chart | BankIT Application all | Count | Aggregation => Date Histogram => Sub Aggregation => Filters (3)
+BankIT Business Performance | Vertical bar chart | BankIT Claims Performance| Average => performance_value | Aggregation => Date Histogram
 
 
 
