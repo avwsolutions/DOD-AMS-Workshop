@@ -1256,7 +1256,10 @@ In this chapter we will
 
 First we will configure our data sources. Since version 2.5 we can also connect Elasticsearch datasources. This is very cool, since we have one metric (performance_value) available.
 
-First open your local [grafana](http://localhost:3000) instance.
+First open your local [grafana](http://localhost:3000) instance. You can login with the default username & password ( admin/admin)
 
+<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/grafanalogin.png" alt="grafanalogin">
 
- 
+Now look at the following instruction video how to add the Graphite and Elasticsearch datasources.
+
+<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/grafanads.gif" alt="grafanads"> 
