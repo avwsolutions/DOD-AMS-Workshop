@@ -1,2 +1,0 @@
-# cat /opt/logstash/config/* > /tmp/shipper.conf # shows the full configuration file
-# More information ??? Contact AvW - Juggernaut Squad 

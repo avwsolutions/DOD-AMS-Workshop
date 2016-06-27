@@ -1126,7 +1126,15 @@ BankIT Hourly Trend Analysis - Middleware| Data Table | BankIT Middleware Events
 BankIT Total Exceptions | Metric| BankIT Middleware Exceptions| Aggregation => Count| n.a.
 BankIT OperatingSystem Facilities shown by Severity over time | Vertical bar chart | BankIT Operating System Events | Aggregation => Count | X-Axis => Aggregation => Date Histogram,Split Bars => Sub Aggregation => Terms => facility_label, Split Chart => Sub Aggregation => terms => severity_label
 
+Finally the last step to create the actual dashboard, which is the simplest task. Just select all your '*Visualizations*' and/or '*Searches*' and save it.
 
+First look at this instruction video and then create a dashboard. 
+
+<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/create_dashboard.gif" alt="CreateDash">
+
+You can use the below screenshot as example to order all '*Visualizations*'.
+
+<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/bankitdashboard.gif" alt="KibanaDashboard">
 
 
 
