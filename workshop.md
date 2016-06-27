@@ -1117,53 +1117,8 @@ Viz Name | Viz Type | Search | Metric | Bucket(s)
 ---------|----------|--------|--------|----------
 BankIT Application messages over time | Line chart | BankIT Application all | Count | Aggregation => Date Histogram => Sub Aggregation => Filters (3)
 BankIT Business Performance | Vertical bar chart | BankIT Claims Performance| Average => performance_value | Aggregation => Date Histogram
-
-
-
-BankIT Functional Messages
-Pie Chart
-BankIT Functional messsages
-Aggregation
-Count
-Aggregation
-Terms:appl_loglevel
-Sub Aggregation
-Terms:appl_class
-BankIT Technical Messages
-Pie Chart
-BankIT Technical messsages
-Aggregation
-Count
-Aggregation
-Terms:appl_loglevel
-Sub Aggregation
-Terms:appl_class
-BankIT Data Mask Status
-Vertical bar Chart
-BankIT Grok Parser Failed
-Aggregation
-Count
-Aggregation
-Data Histogram
-BankIT Catalina Messages over Time
-Area Chart
-BankIT Catalina Events
-Count
-Aggregation
-Date Histogram
-Sub Aggregation
-Filters(3)
-BankIT Hourly Trend Analysis - Functionality
-Metric
-BankIT All
-Aggregation
-Count
-Aggregation
-Date Range
-today + yesterday hourly
-Sub Aggregation
-Filters(2)
-
-
-
-
+BankIT Functional Messages | Pie Chart | BankIT Functional messsages| Aggregation => Count| Aggregation => Terms:appl_loglevel, Sub Aggregation => Terms:appl_class
+BankIT Technical Messages | Pie Chart | BankIT Technical messsages | Aggregation => Count | Aggregation => Terms:appl_loglevel, Sub Aggregation => Terms:appl_class
+BankIT Unknown Pattern | Vertical bar Chart | BankIT Grok Parser Failed | Aggregation => Count | Aggregation => Data Histogram
+BankIT Tomcat Messages over Time| Area Chart | BankIT Tomcat Events | Aggregation => Count | Aggregation => Date Histogram,  Sub Aggregation => Filters(3)
+BankIT Hourly Trend Analysis - Functionality | Metric | BankIT All | Aggregation => Count | Aggregation Date => Range = today + yesterday hourly, sub aggregation => Filters(2)
