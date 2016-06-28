@@ -46,7 +46,7 @@ def log (message):
 shoot = True
 debug = False # True
 Timestamp = int()
-CARBON_SERVER = "juggernaut.monitor.now"
+CARBON_SERVER = "localhost"
 CARBON_PORT = 2003
 
 signal.signal(signal.SIGINT, signal_handler)

@@ -1296,4 +1296,6 @@ Infrastructure | Memory Resources,4 | Graph | local-graphite | collectddatalake_
 Infrastructure | Storage Resources,4 | Graph | local-graphite | collectddatalake_monitor_nowcollectd.df-root.* | Draw Modes: Lines
 ELK Stack, not visible | Event count,12 | Table | local-elasticsearch | Metrics: Count(), Group by: Date Historygram(@timestamp) | General:Drilldown:Type: Absolute, Url http://localhost:5601/, Title Data Lake, Open in new tab
 
- 
+You can have a sneak preview on the results, by looking at the screenshot below.
+
+<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/grafana_result.png" alt="grafana_result"> 

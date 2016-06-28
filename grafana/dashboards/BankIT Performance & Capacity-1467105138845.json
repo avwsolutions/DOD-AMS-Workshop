@@ -1,7 +1,7 @@
 {
-  "id": 1,
-  "title": "My First Dashboard",
-  "originalTitle": "My First Dashboard",
+  "id": 2,
+  "title": "BankIT Performance & Capacity",
+  "originalTitle": "BankIT Performance & Capacity",
   "tags": [],
   "style": "dark",
   "timezone": "browser",
@@ -23,10 +23,17 @@
             "rgba(237, 129, 40, 0.89)",
             "rgba(50, 172, 45, 0.97)"
           ],
-          "datasource": "JuggernautES",
+          "datasource": "local-elasticsearch",
           "editable": true,
           "error": false,
           "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
           "id": 7,
           "interval": null,
           "isNew": true,
@@ -53,7 +60,8 @@
                   "id": "2",
                   "settings": {
                     "interval": "auto",
-                    "min_doc_count": 0
+                    "min_doc_count": 0,
+                    "trimEdges": 0
                   },
                   "type": "date_histogram"
                 }
@@ -99,6 +107,13 @@
           "editable": true,
           "error": false,
           "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
           "id": 8,
           "interval": null,
           "isNew": true,
@@ -120,7 +135,7 @@
           "targets": [
             {
               "refId": "A",
-              "target": "collectdjuggernautcollectd.load.load.shortterm"
+              "target": "collectddatalake_monitor_nowcollectd.load.load.longterm"
             }
           ],
           "thresholds": "1,0.5,0.1",
@@ -148,7 +163,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "JuggernautES",
+          "datasource": "local-elasticsearch",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -237,16 +252,38 @@
           "timeShift": null,
           "title": "Claims Performance",
           "tooltip": {
+            "msResolution": false,
             "shared": true,
             "value_type": "cumulative"
           },
           "transparent": true,
           "type": "graph",
           "x-axis": true,
+          "xaxis": {
+            "show": true
+          },
           "y-axis": true,
           "y_formats": [
             "short",
             "short"
+          ],
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
           ]
         },
         {
@@ -301,16 +338,38 @@
           "timeShift": null,
           "title": "BankIT - Metrics",
           "tooltip": {
+            "msResolution": false,
             "shared": true,
             "value_type": "cumulative"
           },
           "transparent": true,
           "type": "graph",
           "x-axis": true,
+          "xaxis": {
+            "show": true
+          },
           "y-axis": true,
           "y_formats": [
             "short",
             "short"
+          ],
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
           ]
         }
       ],
@@ -367,23 +426,45 @@
           "targets": [
             {
               "refId": "A",
-              "target": "collectdjuggernautcollectd.cpu-0.*"
+              "target": "collectddatalake_monitor_nowcollectd.cpu-0.*"
             }
           ],
           "timeFrom": null,
           "timeShift": null,
           "title": "CPU Resources",
           "tooltip": {
+            "msResolution": false,
             "shared": true,
             "value_type": "cumulative"
           },
           "transparent": true,
           "type": "graph",
           "x-axis": true,
+          "xaxis": {
+            "show": true
+          },
           "y-axis": true,
           "y_formats": [
             "short",
             "short"
+          ],
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
           ]
         },
         {
@@ -431,23 +512,45 @@
           "targets": [
             {
               "refId": "A",
-              "target": "collectdjuggernautcollectd.memory.*"
+              "target": "collectddatalake_monitor_nowcollectd.memory.*"
             }
           ],
           "timeFrom": null,
           "timeShift": null,
           "title": "Memory Resources",
           "tooltip": {
+            "msResolution": false,
             "shared": true,
             "value_type": "cumulative"
           },
           "transparent": true,
           "type": "graph",
           "x-axis": true,
+          "xaxis": {
+            "show": true
+          },
           "y-axis": true,
           "y_formats": [
             "short",
             "short"
+          ],
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
           ]
         },
         {
@@ -495,23 +598,45 @@
           "targets": [
             {
               "refId": "A",
-              "target": "collectdjuggernautcollectd.interface-enp0s3.*.*"
+              "target": "collectddatalake_monitor_nowcollectd.df-root.*"
             }
           ],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Network Traffic",
+          "title": "Storage Resources",
           "tooltip": {
+            "msResolution": false,
             "shared": true,
             "value_type": "cumulative"
           },
           "transparent": true,
           "type": "graph",
           "x-axis": true,
+          "xaxis": {
+            "show": true
+          },
           "y-axis": true,
           "y_formats": [
             "short",
             "short"
+          ],
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
           ]
         }
       ],
@@ -525,7 +650,7 @@
       "panels": [
         {
           "columns": [],
-          "datasource": "JuggernautES",
+          "datasource": "local-elasticsearch",
           "editable": true,
           "error": false,
           "fontSize": "100%",
@@ -576,7 +701,8 @@
                   "id": "2",
                   "settings": {
                     "interval": "auto",
-                    "min_doc_count": 0
+                    "min_doc_count": 0,
+                    "trimEdges": 0
                   },
                   "type": "date_histogram"
                 }
@@ -590,7 +716,6 @@
                 }
               ],
               "refId": "A",
-              "target": "",
               "timeField": "@timestamp"
             }
           ],
@@ -642,7 +767,7 @@
     "list": []
   },
   "refresh": false,
-  "schemaVersion": 8,
-  "version": 17,
+  "schemaVersion": 12,
+  "version": 12,
   "links": []
 }
