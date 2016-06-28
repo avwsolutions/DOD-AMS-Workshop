@@ -1250,16 +1250,35 @@ After starting the metric-generator open the '*graphite-web*' again and drill do
 
 Since we have started our metric-generator it is time to configure our Grafana instance. Grafana is a clone from Kibana and evolved in a mature dashboard application for metric data.
 
-In this chapter we will 
+In this section we will 
+- Small introduction in Grafana.
 - Configure our data sources, which will be Graphite and Elasticsearch.
 - Create our dashboard with all required information.
 
+As mentioned above Grafana is a succesfull clone of the Kibana(3) build, which is evolved to a great dashboarding tool. As with Kibana3 the concept of *Rows and *Panels* is used. One big advantage is that Grafana supports multiple data sources (such as Graphite, Elasticsearch and InfluxDB).
+
+In short your dashboard is build out of various rows. Practice could be to make use of three rows, which functional bundles the metric data (one or more queries ). To make the content available you must first add one or more panels. You can select many types of panels
+- Singlestat
+- Graph
+- Table
+- Text
+- Dashboard list
+- Plugin list
+
+In the exercise we will create some singlestat, graph and table panels from various data sources. 
+
 First we will configure our data sources. Since version 2.5 we can also connect Elasticsearch datasources. This is very cool, since we have one metric (performance_value) available.
 
-First open your local [grafana](http://localhost:3000) instance. You can login with the default username & password ( admin/admin)
+Open your local [grafana](http://localhost:3000) instance. You can login with the default username & password ( admin/admin)
 
 <img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/grafanalogin.png" alt="grafanalogin">
 
 Now look at the following instruction video how to add the Graphite and Elasticsearch datasources.
 
-<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/grafanads.gif" alt="grafanads"> 
+<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/grafanads.gif" alt="grafanads">
+
+It's time to add the datasources yourself.Open the local grafana console and create some awesome dashboards.
+
+Before creating the dashboard you can first look at the following instruction video, which explains how to add the various type of *panels* to your *rows* and configure the queries.
+
+<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/create_dashgrafana2.gif" alt="creat_dashgrafana2"> 
