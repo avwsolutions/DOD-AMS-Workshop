@@ -1427,10 +1427,53 @@ $ sudo systemctl start kafka-zookeeper.service
 $ sudo systemctl start kafka.service
 ```
 
+Now it's time to create the two required topics, called '*events*' and '*metrics*'
 
+```
+$ cd /opt/kafka/bin
+$ ./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic events 
+$ ./kafka-topics.sh --describe --zookeeper localhost:2181 --topic events
+$ ./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic metrics
+$ ./kafka-topics.sh --describe --zookeeper localhost:2181 --topic metrics
+```
+You can test the EMS with the following commands, using the '*stdin*' and '*stdout*'.
+
+```
+$ cd /opt/kafka/bin
+$ ./kafka-console-consumer.sh --zookeeper localhost:2181 --topic events --from-beginning &
+[1] 5541
+$ ./kafka-console-producer.sh --broker-list localhost:9092 --topic events
+Hello DevOpsDays AMS2016
+Hello DevOpsDays AMS2016
+<CTRL-C>
+$ fg 1
+<CTRL-C>
+
+```
+Now that you know the EMS is working you can start working on the Logstash configuration
 
 <a id="logkaf"></a>
 ### 4.2 Create your Kafka Logstash configuration
+
+One of the nice things of logstash that it supports many input channels, like Kafka. As we just setup Kafka and created a topic called '*events*' we will create the configuration for that.
+Now add the following input filter to your `/etc/logstash/conf.d/000-input.conf` file.
+
+```
+#000-input.conf
+
+kafka {
+	topic_id   => "events"
+	group_id   => "datalake"
+	type	   => "application"
+	zk_connect => "localhost:2181"
+	decorate_events => true
+        tags       => ["kafka","application","logs","bankit"]
+}
+
+```
+Now you can start the Java worker. 
+
+
 
 <a id="directlog"></a>
 ### 4.3 Direct application logging through Java workers
