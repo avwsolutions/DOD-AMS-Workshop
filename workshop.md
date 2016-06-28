@@ -46,20 +46,19 @@ This document contains a series of several sections, each of which explains a pa
     -   [1.4 Install & configure Graphite](#graphite)
     -   [1.5 Install & configure Grafana](#grafana)
 -   [2.0 BankIT Scenario : part1 ](#bankit1)
-    -   [2.1 Your first logstash configuration](#basics)
-    -   [2.2 Connecting the syslog](#syslog)
+    -   [2.1 Your first Logstash configuration](#basics)
+    -   [2.2 Connecting the Syslog](#syslog)
     -   [2.3 Our middleware logs](#logfile)
     -   [2.4 Application logging & performance](#logperf)
-    -   [2.5 Our first kibana dashboard](#fkibana)
+    -   [2.5 Our first Kibana dashboard](#fkibana)
 -   [3.0 BankIT Scenario : part2 ](#bankit2)
     - [3.1 Install & configure Collectd](#collectd)
     - [3.2 Application performance metrics to Graphite](#grapmet)
-    - [3.3 Our first grafana dashboard](#grafana)
+    - [3.3 Our first Grafana dashboard](#grafana)
 -   [4.0 BankIT Scenario : part3 ](#bankit3)
     - [4.1 Install & configure Kafka](#kafka)
     - [4.2 Create your Kafka Logstash configuration](#logkaf)
     - [4.3 Direct application logging through Java workers] (#directlog)
--  [References](#references)
 
 ------------------------------
 <a href="#table-of-contents" class="top" id="preface">Top</a>
@@ -151,7 +150,7 @@ Now that you have everything setup, it's time to get our hands dirty. In this fi
 
 > Note : Be aware that for this task internet connectivity is needed. For convenience there is already a cache version available.
 
-To get started type the following command in your terminal
+To get started type the following commands in your terminal.
 ```
 $ sudo su -
 # cd /usr/local/src
@@ -778,7 +777,7 @@ Now again use Discover to see the latest events. Now click on the facility field
 <a id="logfile"></a>
 ### 2.3 Our middleware logs 
 
-Now that we succesfully connected the '*syslog*' messages we can start connecting the Middleware logs. In this section we will setup the parsing of Middleware logs with the '*file*' input.
+Now that we successfully connected the '*syslog*' messages we can start connecting the Middleware logs. In this section we will setup the parsing of Middleware logs with the '*file*' input.
 
 - Add the configuration for the '*file*' input.
 - Setup and validate our required Grok filters.
@@ -803,7 +802,7 @@ file {
 > Note : Did you see the **multiline codec** defined ? This tells logstash how to handle multiline exceptions. In our case all lines that start with a <space> belong to the previous line. This total sum of lines will then be the message which will be stored in the data lake.
 
 Now that we have our log file configured, we can setup the correct parsing. This parsing is usually done with the famous '*grok*' filter.
-Below an sample message in the catalina.log
+Below a sample message in the catalina.log
 
 ```
 24-Feb-2016 14:58:21.447 SEVERE [localhost-startStop-2] org.apache.catalina.loader.WebappClassLoader.checkThreadLocalMapForLeaks The web application has shutdown with leaks
@@ -1079,7 +1078,7 @@ The first phase is *Discover*. In this phase you will explore the data and creat
 
 Data querying is easy. It is based on the Lucene® engine and accepts full text search. In the previous sections you already did some specific field/value queries, like '*type:application*'. You can also combine the queries with AND/OR statements.
 
-To create the awesome dashboard we need x saved Searches.
+To create the awesome dashboard we need 14 saved Searches.
 
 First look at this instruction video and then create the following Searches.
 
@@ -1161,6 +1160,8 @@ It is time to start collecting metrics. In this simple exercise we will install 
 
 See the commands below for installing and configuring your Collectd engine.
 
+> Note : Be aware that for this task internet connectivity is needed. For convenience the Epel repository is configured and there is already a cache yum download available.
+
 ```
 $ sudo yum -y install collectd 
 ```
@@ -1198,7 +1199,7 @@ LoadPlugin df
 ```
 Now create these files in the `/etc/collectd.d/` directory.
 
-ow we can configure the service configuration. Notice it is using systemd.
+Last thing is that we must configure the service configuration. Notice it is using systemd.
 After that you can start the '*collectd*' service.
 
 ```
@@ -1213,7 +1214,7 @@ Now open your local [Graphite-web](http://localhost:9080) page to check if Colle
 <a id="grapmet"></a>
 ### 3.2 Application performance metrics to Graphite
 
-First a small introduction in sending metric data to Graphite.Data itself is send over to the Carbon Relay and stored in a Whisper data file. This is the most common situation,but for scaling other implementations exist (like carbon-relay.go, carbon-c-relay, writing to InfluxDB or Cassandra backend)
+First a small introduction in sending metric data to Graphite.Data itself is send over to the Carbon Relay and stored in a Whisper data file. This is the most common situation,but for scaling other implementations exist (like carbon-relay.go, carbon-c-relay, writing to InfluxDB or Cassandra backend).
 
 Graphite has two methods to send data over.
 - Plaintext protocol (one by one)
@@ -1225,7 +1226,7 @@ Parameters are:
 - **Metric value**, which must be an integer or float. 
 - **Time value**, which is seconds (Epoch time) since 01-01-1970, see output `date +%s`
 
-Now send some test metrics with just a simple one liner
+Now send some test metrics with just a simple one liner.
 ```
 $ sudo echo "my.dod-ams 2016 $(date +%s)" > /dev/tcp/localhost/2003 
 ```
@@ -1256,7 +1257,7 @@ In this section we will
 - Configure our data sources, which will be Graphite and Elasticsearch.
 - Create our dashboard with all required information.
 
-As mentioned above Grafana is a succesfull clone of the Kibana(3) build, which is evolved to a great dashboarding tool. As with Kibana3 the concept of *Rows* and *Panels* is used. One big advantage is that Grafana supports multiple data sources (such as Graphite, Elasticsearch and InfluxDB).
+As mentioned above Grafana is a successful clone of the Kibana(3) build, which is evolved to a great dashboarding tool. As with Kibana3 the concept of *Rows* and *Panels* is used. One big advantage is that Grafana supports multiple data sources (such as Graphite, Elasticsearch and InfluxDB).
 
 In short your dashboard is build out of various rows. Practice could be to make use of three rows, which functional bundles the metric data (one or more queries ). To make the content available you must first add one or more panels. You can select many types of panels
 - Singlestat
@@ -1304,16 +1305,16 @@ You can have a sneak preview on the results, by looking at the screenshot below.
 <a id="bankit3"></a>
 ## 4.0 BankIT Scenario : part3
 
-During the succesful sprint demo one of the stakeholders asked about the possibilities of Broker connectivity. Drake who is the architect for messaging suggests to use Kafka. Kafka is already the core enterprise messaging system (EMS) between all the application components and it's easy to extend the EMS with two additional topics for '*events*' and '*metrics*' distribution to the data lake.Also other applications can then easily connect to the data lake.
+During the successful sprint demo one of the stakeholders asked about the possibilities of Broker connectivity. Drake who is the architect for messaging suggests to use Kafka. Kafka is already the core enterprise messaging system (EMS) between all the application components and it's easy to extend the EMS with two additional topics for '*events*' and '*metrics*' distribution to the data lake.Also other applications can then easily connect to the data lake.
 
 You as engineer know that logstash has an input plugin available for Kafka and also Alex want to help you setup some Java workers, which will do the work for '*Producing*' and '*Consuming*' the data.
 At the end of the demo everybody agreed to implement this functionality quickly, because of the launch of a new innovative product called "FinCoach". 
 
 **Below the functional needs:**
 
-- Kafka must be extended with two additional topics
+- Kafka must be extended with two additional topics.
 - Logstash Indexer must be extended to consume the event topic.
-- Current Java framework must be extended to produce event and metric data to the correct topics
+- Current Java framework must be extended to produce event and metric data to the correct topics.
 - Java worker must be created to consume metrics from a topic and send them to the graphite carbon-relay.
 
  
@@ -1323,7 +1324,7 @@ At the end of the demo everybody agreed to implement this functionality quickly,
 
 Now it's time to setup a Kafka EMS instance. Working with Kafka looks difficult, but setting up a single running instance is quite easy.
 
-As already mentioned above, Kafka is a A high-throughput distributed messaging system, which is based on the publish&subscribe mechanism. Also some nice benefits are.
+As already mentioned above, Kafka is a high-throughput distributed messaging system, which is based on the publish&subscribe mechanism. Also some nice benefits are.
   
 - Fast processing by handling read/write from thousand of clients, with various data sizes.
 - Messages are persisted on disk, which is very Durable.
@@ -1331,7 +1332,7 @@ As already mentioned above, Kafka is a A high-throughput distributed messaging s
 
 > Note : Be aware that for this task internet connectivity is needed. For convenience there is already a cache version available.
 
-To get started type the following command in your terminal
+To get started type the following commands in your terminal.
 ```
 $ sudo su -
 # cd /opt
@@ -1451,7 +1452,7 @@ $ fg 1
 <CTRL-C>
 
 ```
-Now that you know the EMS is working you can start working on the Logstash configuration
+Now that you know the EMS is working you can start working on the logstash configuration.
 
 <a id="logkaf"></a>
 ### 4.2 Create your Kafka Logstash configuration
@@ -1475,8 +1476,9 @@ kafka {
 Now we have to extend our our `/etc/logstash/conf.d/500-filter.conf` file.
 
 Be very carefull, since you have to update some code.
-The steps, which you need to do.
-- Add an additional match
+Below the steps, which you need to do.
+
+- Add an additional match.
 - Put the '*mutate*' and the '*date {}*' filter for the logfile timestamp between an If statement.
 - Put another Else If for syncing the timestamp from Kafka to the @timestamp field.
 
