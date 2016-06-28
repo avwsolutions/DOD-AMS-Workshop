@@ -1537,12 +1537,20 @@ See below for the example.Notice the additional kafka fields.
 <a id="directlog"></a>
 ### 4.3 Direct application logging through Java workers
 
-Now that we compiled our Maven package. Also the the *Producer* and the *Consumer* Graphite Kafka API is available. To test this you must type the following command.
-First kill the `metric-generator` script.
+Now that we compiled our Maven package. Also the the *Producer* and the *Consumer* Graphite Kafka API is available. To test this you must type the following commands.
+
+First create the `/tmp/metrics.txt` file and kill the `metric-generator` script.
+
+```
+app.bankit.prd.businessvolumes.fullfilment.count;100
+app.bankit.prd.processing.transactions.count;2000
+app.bankit.prd.concurrent.users.avg;200
+```
 
 ```
 $ kill $(ps -ef | grep metric-generator | grep -v grep | awk '{print $2}')
 $ cd /usr/local/src/DOD-AMS-Workshop/generator/datalake-loadgenerator
+$ cp metrics.txt /tmp/metrics.txt
 $ target/datalake-loadgenerator graphiteproducer &
 $ target/datalake-loadgenerator consumer
 ```

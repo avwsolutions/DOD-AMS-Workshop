@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Kibana</short>
+  <description>Kibana Appl server, which is based on http traffic.</description>
+  <port protocol="tcp" port="5601"/>
+</service>

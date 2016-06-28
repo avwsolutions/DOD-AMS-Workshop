@@ -35,6 +35,7 @@ LS_LOG_FILE="${LS_LOG_DIR}/$name.log"
 LS_CONF_DIR=/etc/logstash/conf.d
 LS_OPEN_FILES=16384
 LS_NICE=19
+KILL_ON_STOP_TIMEOUT=${KILL_ON_STOP_TIMEOUT-0} #default value is zero to this variable but could be updated by user request
 LS_OPTS=""
 
 
@@ -53,7 +54,7 @@ start() {
 
   LS_JAVA_OPTS="${LS_JAVA_OPTS} -Djava.io.tmpdir=${LS_HOME}"
   HOME=${LS_HOME}
-  export PATH HOME LS_HEAP_SIZE LS_JAVA_OPTS LS_USE_GC_LOGGING
+  export PATH HOME LS_HEAP_SIZE LS_JAVA_OPTS LS_USE_GC_LOGGING LS_GC_LOG_FILE
 
   # chown doesn't grab the suplimental groups when setting the user:group - so we have to do it for it.
   # Boy, I hope we're root here.
@@ -90,18 +91,19 @@ stop() {
     echo "Killing $name (pid $pid) with SIGTERM"
     kill -TERM $pid
     # Wait for it to exit.
-    for i in 1 2 3 4 5 ; do
+    for i in 1 2 3 4 5 6 7 8 9 ; do
       echo "Waiting $name (pid $pid) to die..."
       status || break
       sleep 1
     done
     if status ; then
-      if [ "$KILL_ON_STOP_TIMEOUT" -eq 1 ] ; then
+      if [ $KILL_ON_STOP_TIMEOUT -eq 1 ] ; then
         echo "Timeout reached. Killing $name (pid $pid) with SIGKILL. This may result in data loss."
         kill -KILL $pid
         echo "$name killed with SIGKILL."
       else
         echo "$name stop failed; still running."
+        return 1 # stop timed out and not forced
       fi
     else
       echo "$name stopped."
@@ -127,6 +129,12 @@ status() {
   fi
 }
 
+reload() {
+  if status ; then
+    kill -HUP `cat "$pidfile"`
+  fi
+}
+
 force_stop() {
   if status ; then
     stop
@@ -142,9 +150,9 @@ configtest() {
   fi
 
   HOME=${LS_HOME}
-  export PATH HOME JAVA_OPTS LS_HEAP_SIZE LS_JAVA_OPTS LS_USE_GC_LOGGING
+  export PATH HOME
 
-  test_args="-f ${LS_CONF_DIR} --configtest ${LS_OPTS}"
+  test_args="--configtest -f ${LS_CONF_DIR} ${LS_OPTS}"
   $program ${test_args}
   [ $? -eq 0 ] && return 0
   # Program not configured
@@ -175,6 +183,7 @@ case "$1" in
     fi
     exit $code
     ;;
+  reload) reload ;;
   restart)
 
     quiet configtest
@@ -190,7 +199,7 @@ case "$1" in
     exit $?
     ;;
   *)
-    echo "Usage: $SCRIPTNAME {start|stop|force-stop|status|restart|configtest}" >&2
+    echo "Usage: $SCRIPTNAME {start|stop|force-stop|status|reload|restart|configtest}" >&2
     exit 3
   ;;
 esac

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Elasticsearch</short>
+  <description>Elasticsearch server REST API, which is based on http traffic.</description>
+  <port protocol="tcp" port="9200"/>
+</service>

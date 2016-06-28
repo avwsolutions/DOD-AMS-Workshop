@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Kafka-zookeeper</short>
+  <description>Kafka-Zookeeper API</description>
+  <port protocol="tcp" port="2181"/>
+</service>

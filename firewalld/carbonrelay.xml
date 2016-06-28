@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Carbon-relay</short>
+  <description>Port for retrieving metrics for various sources.</description>
+  <port protocol="tcp" port="2003"/>
+  <port protocol="udp" port="2003"/>
+</service>

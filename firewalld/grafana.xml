@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Grafana</short>
+  <description>Grafana Appl server, which is based on http traffic.</description>
+  <port protocol="tcp" port="3000"/>
+</service>
