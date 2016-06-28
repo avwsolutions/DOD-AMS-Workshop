@@ -1,0 +1,3 @@
+SEVERE [NAWModule] com.openbank.bankit.NAWModule.Update John Doe record updated with Flevostraat 100, Purmerend
+WARNING [RegistrationModule] com.openbank.bankit.Registration.Account Customer registrated, but no valid account record found
+INFO [HouseKeepingModule] com.openbank.bankit.HouseKeeping.Export Export started for main customer info

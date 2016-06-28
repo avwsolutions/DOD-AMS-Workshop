@@ -1456,7 +1456,7 @@ Now that you know the EMS is working you can start working on the Logstash confi
 ### 4.2 Create your Kafka Logstash configuration
 
 One of the nice things of logstash that it supports many input channels, like Kafka. As we just setup Kafka and created a topic called '*events*' we will create the configuration for that.
-Now add the following input filter to your `/etc/logstash/conf.d/000-input.conf` file.
+Now add/extend the following input filter to our `/etc/logstash/conf.d/000-input.conf` file.
 
 ```
 #000-input.conf
@@ -1471,10 +1471,80 @@ kafka {
 }
 
 ```
-Now you can start the Java worker. 
+Now we have to extend our our `/etc/logstash/conf.d/500-filter.conf` file.
 
+Be very carefull, since you have to update some code.
+The steps, which you need to do.
+- Add an additional match
+- Put the '*mutate*' and the '*date {}*' filter for the logfile timestamp between an If statement.
+- Put another Else If for syncing the timestamp from Kafka to the @timestamp field.
 
+First the match. Put this after the line `match => ["message", "%{MONTHDAY:tmp_mday`
+
+```
+match => [ "message", "%{LOGLEVEL:appl_loglevel} \[%{DATA:appl_module}\] %{DATA:appl_class} %{GREEDYDATA:appl_message}" ]
+```
+
+Create the If statement,which will hold the mutate and the date for logfile timestamp handling.
+
+```
+if [tmp_mday] {	
+                	mutate {
+                        	add_field => { "timestamp" => "%{tmp_mday}-%{tmp_month}-%{tmp_year} %{tmp_time}" }
+                        	remove_field => [ "tmp_mday","tmp_month","tmp_year","tmp_time" ]
+                	}
+
+                	date {
+                        	match => [ "timestamp", "dd-MMM-yyyy HH:mm:ss.SSS" ]
+                        	remove_field => [ "timestamp" ]
+                	}
+}
+```
+Add the additional 'else if' to this 'if' statement.
+
+```
+else if "kafka" in [tags] {
+		date {
+                           match => [ "timestamp", "ISO8601" ]
+                           remove_field => [ "timestamp" ]
+               	}
+}
+```
+Create one file called `/tmp/events.txt` with the content below.
+
+```
+SEVERE [NAWModule] com.openbank.bankit.NAWModule.Update John Doe record updated with Flevostraat 100, Purmerend
+WARNING [RegistrationModule] com.openbank.bankit.Registration.Account Customer registrated, but no valid account record found
+INFO [HouseKeepingModule] com.openbank.bankit.HouseKeeping.Export Export started for main customer info
+```
+Now you can build the package and start the Java worker to generate events. 
+
+> Note : You can stop the `log-generator.py` script, but it will not harm the Java worker.
+
+```
+$ cd /usr/local/src/DOD-AMS-Workshop/generator/datalake-loadgenerator
+$ mvn package 
+$ cd /usr/local/src/DOD-AMS-Workshop/generator/datalake-loadgenerator
+$ cp events.txt /tmp/events.txt
+$ target/datalake-loadgenerator producer &
+```
+Now open your Kibana dashboard again and search for `tags:"kafka"`. This will show all kafka submitted events coming in.
+See below for the example.Notice the additional kafka fields.
+
+<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/event100.png" alt="Event100">
 
 <a id="directlog"></a>
 ### 4.3 Direct application logging through Java workers
- 
+
+Now that we compiled our Maven package. Also the the *Producer* and the *Consumer* Graphite Kafka API is available. To test this you must type the following command.
+First kill the `metric-generator` script.
+
+```
+$ kill $(ps -ef | grep metric-generator | grep -v grep | awk '{print $2}')
+$ cd /usr/local/src/DOD-AMS-Workshop/generator/datalake-loadgenerator
+$ target/datalake-loadgenerator graphiteproducer &
+$ target/datalake-loadgenerator consumer
+```
+Now open [Graphite-web](http://localhost:9080) or [Grafana](http://localhost:3000) to see if the dashboards are still updated.
+
+This is the [END](https://www.youtube.com/watch?v=b9434BoGkNQ) . I hope you enjoyed the workshop. 

@@ -1,0 +1,3 @@
+app.bankit.prd.businessvolumes.fullfilment.count;100
+app.bankit.prd.processing.transactions.count;2000
+app.bankit.prd.concurrent.users.avg;200
