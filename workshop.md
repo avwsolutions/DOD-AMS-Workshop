@@ -1334,7 +1334,7 @@ To get started type the following command in your terminal
 ```
 $ sudo su -
 # cd /opt
-# tar -xvzf kafka_2.11-0.10.0.0.tgz 
+# tar -xvzf /usr/local/src/kafka_2.11-0.10.0.0.tgz 
 # ln -s /opt/kafka_2.11-0.10.0.0 /opt/kafka
 # useradd kafka
 # chown -R kafka.kafka /opt/kafka_2.11-0.10.0.0
