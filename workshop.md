@@ -1320,6 +1320,114 @@ At the end of the demo everybody agreed to implement this functionality quickly,
 <a id="kafka"></a>
 ### 4.1 Install & configure Kafka
 
+Now it's time to setup a Kafka EMS instance. Working with Kafka looks difficult, but setting up a single running instance is quite easy.
+
+As already mentioned above, Kafka is a A high-throughput distributed messaging system, which is based on the publish&subscribe mechanism. Also some nice benefits are.
+  
+- Fast processing by handling read/write from thousand of clients, with various data sizes.
+- Messages are persisted on disk, which is very Durable.
+- Besides above it is very scalable and distributed by nature.
+
+> Note : Be aware that for this task internet connectivity is needed. For convenience there is already a cache version available.
+
+To get started type the following command in your terminal
+```
+$ sudo su -
+# cd /opt
+# tar -xvzf kafka_2.11-0.10.0.0.tgz 
+# ln -s /opt/kafka_2.11-0.10.0.0 /opt/kafka
+# useradd kafka
+# chown -R kafka.kafka /opt/kafka_2.11-0.10.0.0
+# chown -h kafka.kafka /opt/kafka
+```
+
+Now that the binaries are in-place we can create our systemd scripts in '*/etc/systemd/system*'. Below an example '*kafka*' and '*kafka-zookeeper*' script.
+
+**kafka.service**
+```
+# /etc/systemd/system/kafka.service
+
+[Unit]
+Description=Apache Kafka server (broker)
+Documentation=http://kafka.apache.org/documentation.html
+Requires=network.target remote-fs.target 
+After=network.target remote-fs.target kafka-zookeeper.service
+
+[Service]
+Type=simple
+User=kafka
+Group=kafka
+ExecStart=/opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties
+ExecStop=/opt/kafka/bin/kafka-server-stop.sh
+
+[Install]
+WantedBy=multi-user.target
+```
+
+**kafka-zookeeper.service**
+```
+# /etc/systemd/system/kafka-zookeeper.service
+
+[Unit]
+Description=Apache Zookeeper server (Kafka)
+Documentation=http://zookeeper.apache.org
+Requires=network.target remote-fs.target 
+After=network.target remote-fs.target
+
+[Service]
+Type=simple
+User=kafka
+Group=kafka
+ExecStart=/opt/kafka/bin/zookeeper-server-start.sh /opt/kafka/config/zookeeper.properties
+ExecStop=/opt/kafka/bin/zookeeper-server-stop.sh
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Now that we created the two service files we can open our firewall ports.
+
+```
+$ sudo su -
+# cd /usr/lib/firewalld/services
+# vi kafka.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Kafka</short>  <description>Kafka Broker API</description>
+  <port protocol="tcp" port="9092"/>
+</service>
+
+# vi kafka-zookeeper.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Kafka-zookeeper</short>  <description>Kafka-Zookeeper API</description>
+  <port protocol="tcp" port="2181"/>
+</service>
+
+# firewall-cmd --permanent --add-service kafka
+# firewall-cmd --permanent --add-service kafka-zookeeper 
+# firewall-cmd --reload
+```
+Now first add the following parameters to the `/opt/kafka/config/server.properties`
+
+```
+listeners=PLAINTEXT://:9092
+advertised.listeners=PLAINTEXT://localhost:9092
+```
+
+At last we can configure the service configuration and start the service. Notice it is using systemd
+
+```
+$ sudo systemctl daemon-reload
+$ sudo systemctl enable kafka.service
+$ sudo systemctl enable kafka-zookeeper.service
+$ sudo systemctl start kafka.service
+$ sudo systemctl start kafka-zookeeper.service
+```
+
+
 
 <a id="logkaf"></a>
 ### 4.2 Create your Kafka Logstash configuration
