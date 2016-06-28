@@ -1255,7 +1255,7 @@ In this section we will
 - Configure our data sources, which will be Graphite and Elasticsearch.
 - Create our dashboard with all required information.
 
-As mentioned above Grafana is a succesfull clone of the Kibana(3) build, which is evolved to a great dashboarding tool. As with Kibana3 the concept of *Rows and *Panels* is used. One big advantage is that Grafana supports multiple data sources (such as Graphite, Elasticsearch and InfluxDB).
+As mentioned above Grafana is a succesfull clone of the Kibana(3) build, which is evolved to a great dashboarding tool. As with Kibana3 the concept of *Rows* and *Panels* is used. One big advantage is that Grafana supports multiple data sources (such as Graphite, Elasticsearch and InfluxDB).
 
 In short your dashboard is build out of various rows. Practice could be to make use of three rows, which functional bundles the metric data (one or more queries ). To make the content available you must first add one or more panels. You can select many types of panels
 - Singlestat
@@ -1281,4 +1281,15 @@ It's time to add the datasources yourself.Open the local grafana console and cre
 
 Before creating the dashboard you can first look at the following instruction video, which explains how to add the various type of *panels* to your *rows* and configure the queries.
 
-<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/create_dashgrafana2.gif" alt="creat_dashgrafana2"> 
+<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/create_dashgrafana2.gif" alt="creat_dashgrafana2">
+
+Row Name | Panel Name,Span | Panel Type | Metric Datasource | Metric Query | Options/Display 
+---------|----------|--------|--------|------------|--------------|--------
+Service Availability | Claim SLA,6 | Singlestat | local-elasticsearch | Metrics: Average(performance_value), Group by: Date histogram(@timestamp) | Coloring:Background, Sparklines: Show, Background mode
+Service Availability | System Load,6 | Singlestat | local-graphite | collectddatalake_monitor_nowcollectd.load.load.longterm | Coloring:Background, Sparklines: Show, Background mode
+BankIT Application | Claims Performance,6 | Graph | local-elasticsearch | Metrics: Average(performance_value), Group by: Date histogram(@timestamp) | Draw Modes:Lines
+BankIT Application | BankIT - Metrics,6 | Graph | local-graphite | app.bankit.prd.*.*.* | Draw Modes: Lines, Multiple Series:Stack
+Infrastructure | CPU Resources,4 | Graph | local-graphite | collectddatalake_monitor_nowcollectd.cpu-0.* | Draw Modes: Lines
+Infrastructure | Memory Resources,4 | Graph | local-graphite | collectddatalake_monitor_nowcollectd.memory.* | Draw Modes: Lines
+Infrastructure | Storage Resources,4 | Graph | local-graphite | collectddatalake_monitor_nowcollectd.df-root.* | Draw Modes: Lines
+ELK Stack, not visible | Event count,12 | Table | local-elasticsearch | Metrics: Count(), Group by: Date Historygram(@timestamp) | General:Drilldown:Type: Absolute, Url http://localhost:5601/, Title Data Lake, Open in new tab 
