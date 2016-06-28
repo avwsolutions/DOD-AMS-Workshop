@@ -1303,6 +1303,19 @@ You can have a sneak preview on the results, by looking at the screenshot below.
 <a id="bankit3"></a>
 ## 4.0 BankIT Scenario : part3
 
+During the succesful sprint demo one of the stakeholders asked about the possibilities of Broker connectivity. Drake who is the architect for messaging suggests to use Kafka. Kafka is already the core enterprise messaging system (EMS) between all the application components and it's easy to extend the EMS with two additional topics for '*events*' and '*metrics*' distribution to the data lake.Also other applications can then easily connect to the data lake.
+
+You as engineer know that logstash has an input plugin available for Kafka and also Alex want to help you setup some Java workers, which will do the work for '*Producing*' and '*Consuming*' the data.
+At the end of the demo everybody agreed to implement this functionality quickly, because of the launch of a new innovative product called "FinCoach". 
+
+**Below the functional needs:**
+
+- Kafka must be extended with two additional topics
+- Logstash Indexer must be extended to consume the event topic.
+- Current Java framework must be extended to produce event and metric data to the correct topics
+- Java worker must be created to consume metrics from a topic and send them to the graphite carbon-relay.
+
+ 
 
 <a id="kafka"></a>
 ### 4.1 Install & configure Kafka
