@@ -69,6 +69,7 @@ This document contains a series of several sections, each of which explains a pa
 - [Elasticsearch](https://www.elastic.co/downloads/elasticsearch), version **2.3.3**
 - [Logstash](https://www.elastic.co/downloads/logstash), version **2.3.3**
 - [Kibana](https://www.elastic.co/downloads/kibana), version **4.5.1**
+- [CollectD](https://collectd.org/download.shtml), version **5.5.1**
 - [Graphite](https://github.com/graphite-project), version **0.9.15**
 - [Grafana](http://grafana.org/download/), version **3.0.4**
 - [Kafka](http://kafka.apache.org/downloads.html), version **.0.10.0.0**
