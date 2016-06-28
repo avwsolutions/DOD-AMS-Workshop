@@ -1283,6 +1283,8 @@ Before creating the dashboard you can first look at the following instruction vi
 
 <img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/create_dashgrafana2.gif" alt="creat_dashgrafana2">
 
+Enough instruction videos, let's start creating some metric dashboards with [grafana](http://localhost:3000). Use the table below for creating your "BankIT Performance & Capacity" dashboard.
+
 Row Name | Panel Name,Span | Panel Type | Metric Datasource | Metric Query | Options/Display 
 ---------|----------|--------|--------|------------|--------------|--------
 Service Availability | Claim SLA,6 | Singlestat | local-elasticsearch | Metrics: Average(performance_value), Group by: Date histogram(@timestamp) | Coloring:Background, Sparklines: Show, Background mode
@@ -1292,4 +1294,6 @@ BankIT Application | BankIT - Metrics,6 | Graph | local-graphite | app.bankit.pr
 Infrastructure | CPU Resources,4 | Graph | local-graphite | collectddatalake_monitor_nowcollectd.cpu-0.* | Draw Modes: Lines
 Infrastructure | Memory Resources,4 | Graph | local-graphite | collectddatalake_monitor_nowcollectd.memory.* | Draw Modes: Lines
 Infrastructure | Storage Resources,4 | Graph | local-graphite | collectddatalake_monitor_nowcollectd.df-root.* | Draw Modes: Lines
-ELK Stack, not visible | Event count,12 | Table | local-elasticsearch | Metrics: Count(), Group by: Date Historygram(@timestamp) | General:Drilldown:Type: Absolute, Url http://localhost:5601/, Title Data Lake, Open in new tab 
+ELK Stack, not visible | Event count,12 | Table | local-elasticsearch | Metrics: Count(), Group by: Date Historygram(@timestamp) | General:Drilldown:Type: Absolute, Url http://localhost:5601/, Title Data Lake, Open in new tab
+
+ 
