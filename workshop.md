@@ -1298,4 +1298,19 @@ ELK Stack, not visible | Event count,12 | Table | local-elasticsearch | Metrics:
 
 You can have a sneak preview on the results, by looking at the screenshot below.
 
-<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/grafana_result.png" alt="grafana_result"> 
+<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/grafana_result.png" alt="grafana_result">
+
+<a id="bankit3"></a>
+## 4.0 BankIT Scenario : part3
+
+
+<a id="kafka"></a>
+### 4.1 Install & configure Kafka
+
+
+<a id="logkaf"></a>
+### 4.2 Create your Kafka Logstash configuration
+
+<a id="directlog"></a>
+### 4.3 Direct application logging through Java workers
+ 
