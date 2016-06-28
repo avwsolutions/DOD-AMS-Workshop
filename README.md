@@ -1,5 +1,7 @@
 # First steps to create your IT Operations data lake with ELK Stack and Graphite
 
+<img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/header.png" alt="workshop header">
+
 ELK (Elasticsearch-Logstash-Kibana) and Graphite/Grafana are the most popular tools for analyzing your logs and metrics. Almost every company has one of these tools running, with various use cases like big data, analytics or just monitoring.
 In this hands-on workshop the student learns the fundamental skills needed to understand the concepts en start creating their Monitoring configuration. 
 Main topics that are covered are setting up your logstash configuration for log parsing, enabling metric gathering with Graphite (i.e. Collectd) and finally create some awesome dashboards.
