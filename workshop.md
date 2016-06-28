@@ -1413,7 +1413,7 @@ $ sudo su -
 Now first add the following parameters to the `/opt/kafka/config/server.properties`
 
 ```
-listeners=PLAINTEXT://:9092
+listeners=PLAINTEXT://localhost:9092
 advertised.listeners=PLAINTEXT://localhost:9092
 ```
 
@@ -1423,8 +1423,8 @@ At last we can configure the service configuration and start the service. Notice
 $ sudo systemctl daemon-reload
 $ sudo systemctl enable kafka.service
 $ sudo systemctl enable kafka-zookeeper.service
-$ sudo systemctl start kafka.service
 $ sudo systemctl start kafka-zookeeper.service
+$ sudo systemctl start kafka.service
 ```
 
 
