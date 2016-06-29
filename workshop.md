@@ -162,7 +162,7 @@ $ sudo su -
 
 > Note : Elastic recommends using Oracle Java over OpenJDK. In this workshop we will use OpenJDK which also is supported.
 
-Below the commands for installing the openJDK JRE and checking if the path & version (1.7 or greater) are correct. 
+Below you will find the commands for installing the openJDK JRE and checking if the path & version (1.7 or greater) are correct. 
 
 ```
 $ sudo yum -y install jre
@@ -174,7 +174,7 @@ OpenJDK 64-Bit Server VM (build 25.91-b14, mixed mode)
 
 > Note : Be aware that for this task internet connectivity is needed. For convenience the Elastic repository is configured and there is already a cache yum download available.
 
-Below the commands for installing elasticsearch. 
+Below you will find the command for installing elasticsearch. 
 
 ```
 $ sudo yum -y install elasticsearch
@@ -215,7 +215,7 @@ $ sudo su -
 # firewall-cmd --reload
 ```
 
-At last we can configure the service configuration and start the service. Notice it is using systemd
+Finally we will configure the service configuration and start the service. Notice it is using systemd
 
 ```
 $ sudo systemctl daemon-reload
@@ -228,13 +228,13 @@ $ sudo systemctl start elasticsearch.service
 
 > Note : Be aware that for this task internet connectivity is needed. For convenience the Elastic repository is configured and there is already a cache yum download available.
 
-Below the commands for installing logstash.
+Below you will find the command for installing logstash.
 
 ```
 $ sudo yum -y install logstash 
 ```
 
-At last we can configure the service configuration. Notice it is not using systemd.
+Finally we will configure the service configuration. Notice it is not using systemd.
 
 ```
 $ sudo systemctl daemon-reload
@@ -246,7 +246,7 @@ $ sudo systemctl enable logstash.service
 
 > Note : Be aware that for this task internet connectivity is needed. For convenience the Elastic repository is configured and there is already a cache yum download available.
 
-Below the commands for installing kibana.
+Below you will find the command for installing kibana.
 
 ```
 $ sudo yum -y install kibana 
@@ -268,7 +268,7 @@ $ sudo su -
 # firewall-cmd --reload
 ```
 
-At last we can configure the service configuration. Notice it is using systemd.
+Finally we will configure the service configuration. Notice it is using systemd.
 
 ```
 $ sudo systemctl daemon-reload
@@ -281,8 +281,8 @@ $ sudo systemctl start kibana.service
 
 > Note : Be aware that for this task internet connectivity is needed. For convenience the Epel repository is configured and there is already a cache yum download available.
 
-Below the commands for installing Graphite. As you can see Graphite has more things to taken care.
-First we are going to install the dependencies and mandatory web server, python tools and compilers.
+Below you will find the commands for installing Graphite. As you can see we need to install quite some dependencies in order to get Graphite working.
+The two following commands are needed to install the dependencies,mandatory web server, python tools and compilers.
 
 ```
 $ sudo yum -y install httpd gcc gcc-c++ git pycairo mod_wsgi epel-release
@@ -298,7 +298,7 @@ $ sudo su -
 # git clone https://github.com/graphite-project/graphite-web.git
 # git clone https://github.com/graphite-project/carbon.git
 ```
-Now that we have the sources we are ready to install the binaries. This is done through the `pip` command. Since there are some changes "[syncdb deprecated]"(https://docs.djangoproject.com/en/1.7/topics/migrations/) in Django 1.9.x release, it is mandatory to first update the requirements.txt input file.
+Now that we have the sources we are ready to install the binaries. This can be done with the `pip` command. Since there are some changes "[syncdb deprecated]"(https://docs.djangoproject.com/en/1.7/topics/migrations/) in Django 1.9.x release, it is mandatory to first update the requirements.txt input file.
 
 ```
 $ sudo su -
@@ -326,7 +326,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 ```
 
-Next steps are running the setup script for installing carbon.
+Next steps are needed for running the setup script for installing carbon.
 
 ```
 $ sudo su -
@@ -341,7 +341,7 @@ $ sudo su -
 # python setup.py install
 ```
 
-Copy over all template configurations (graphite-web and carbon-*) and setup the service startup files.
+Copy all template configurations for graphite-web and carbon-*.
 
 ```
 $ sudo cp /opt/graphite/conf/carbon.conf.example /opt/graphite/conf/carbon.conf
@@ -352,9 +352,11 @@ $ sudo cp /opt/graphite/conf/aggregation-rules.conf.example /opt/graphite/conf/a
 $ sudo cp /opt/graphite/webapp/graphite/local_settings.py.example /opt/graphite/webapp/graphite/local_settings.py
 $ sudo cp /opt/graphite/conf/graphite.wsgi.example /opt/graphite/conf/graphite.wsgi
 $ sudo cp /opt/graphite/examples/example-graphite-vhost.conf /etc/httpd/conf.d/graphite.conf
+```
 
-# Copy over service startup scripts and make them executable
- 
+Copy the service startup scripts and make them executable.
+
+``` 
 $ sudo cp /usr/local/src/carbon/distro/redhat/init.d/carbon-* /etc/init.d/
 $ sudo chmod +x /etc/init.d/carbon-*
 
@@ -370,7 +372,7 @@ $ sudo su -
 
 > Response : Yes, accept default '*root*', leave the email address '*empty*' and use '*password*' as password.
 
-Also the static content will be generated. Also don't forget to set the correct owner for the *httpd* server.
+The static content will be generated. Also don't forget to set the correct owner for the *httpd* server.
 
 > Note : Currently we are running in SELinux *Permissive* mode instead of *Enforcing*.In production environments always move your webserver content to the */var/www/html* or implement the correct *SELinux* acccess control Security contexts. 
 
@@ -403,7 +405,7 @@ $ sudo su -
 # firewall-cmd --reload
 
 ```
-Since there default virtual host configuration template for *httpd* is not working due CentOS restrictions (httpd 2.4), we have to add some additional configuration.
+Since the default virtual host configuration template for *httpd* is not working due CentOS restrictions (httpd 2.4), we have to add some additional configuration.
 
 **Correct configuration**
 
@@ -505,7 +507,7 @@ $ sudo vi /etc/httpd/conf.d/graphite.conf
 
 
 
-At last we can configure the service configuration. Notice it is not using systemd.
+Finally we will configure the service configuration. Notice it is not using systemd.
 
 ```
 $ sudo systemctl daemon-reload
@@ -529,7 +531,7 @@ $ sudo systemctl start carbon-cache
 
 > Note : Be aware that for this task internet connectivity is needed. For convenience the Grafana repository is configured and there is already a cache yum download available.
 
-Below the commands for installing grafana.
+Below you will find the command for installing grafana.
 
 ```
 $ sudo yum -y install grafana 
@@ -551,7 +553,7 @@ $ sudo su -
 # firewall-cmd --reload
 ```
 
-At last we can configure the service configuration. Notice it is using systemd.
+Finally we will configure the service configuration. Notice it is using systemd.
 
 ```
 $ sudo systemctl daemon-reload
@@ -562,24 +564,24 @@ $ curl http://localhost:3000/login
 <a id="bankit1"></a>
 ## 2.0 BankIT Scenario : part1 
 
-You are hired as an experienced Engineer at a new FINTEC startup, named Bank IT. You are part of the DevOps team which delivers the core Cloud Platform and is used by the BankIT application. Within the current sprint you are designated to help Kenny setting up the ITOps data lake. Kenny already has setup the functional needs, but has a lack of technical skills.
+You are hired as an experienced Engineer at a new FINTEC startup, named Bank IT. You are part of the DevOps team which delivers the core Cloud Platform and is used by the BankIT application. Within the current sprint you are designated to help Kenny setting up the ITOps data lake. Kenny already has defined the functional requirements, but lacks the technical skills to do the implementation.
 
-in this part of the scenario we have to gather the events from the Middleware and Operating System.BankIT itself is a web based application, which has Tomcat application server as Middleware and Linux as Operating System. 
+BankIT itself is a web based application, which has Tomcat application server as Middleware and Linux as Operating System. In this use case we have to gather the events from the Middleware and Operating System. 
 
-**Below the functional needs:**
+**Below the functional requirements:**
 
 - All Operating System messages (syslog) must be available in the data lake.
 - All Middleware messages must be available in the data lake.
 - Security related messages (facility 4/10 - audit, ) must be masked.
 - Original timestamp must be used from source ( not on arrival )
 - Application context must be added, either Functional or Technical.
-- Customer privacy-sensitive messages must not enter the data lake.
+- Customer privacy-sensitive messages must be excluded from the data lake.
 - All messages that not match a pattern must be traceable for optimalization.
 
 <a id="basics"></a>
 ### 2.1 Your first logstash configuration 
 
-Now it is finally time to play around with logstash. If you never used logstash, these excercises are there to be familiar with the syntax. Otherwise skip this section and start at <a href="#syslog" class="syslog" id="basics">2.2 Connecting the syslog</a>
+Now it is finally time to play around with logstash. If you never used logstash, these excercises are there to get familiar with the syntax.If you are familiar skip this section and start at <a href="#syslog" class="syslog" id="basics">2.2 Connecting the syslog</a>
 
 Do your first inline code with LogStash using your standard input (command) and output (screen) channels.
 
@@ -587,7 +589,7 @@ Do your first inline code with LogStash using your standard input (command) and 
 $ /opt/logstash/bin/logstash -e 'input { stdin { } } output { stdout {} }'
 ```
 After the logstash agent is initialized, it is waiting for input. Now type in '*Hello DevOpsDays AMS2016*' and press <ENTER>.
-You will see logstash to respond to that with a message.
+You will see logstash respond to that command with a message:
 
 ```
 Settings: Default pipeline workers: 1
@@ -596,12 +598,12 @@ Hello DevOpsDays AMS2016
 2016-06-25T02:16:59.848Z datalake.monitor.now Hello DevOpsDays AMS2016
 ```
 
-No close the worker `CTRL-C` and add some additional code. Do you see what are the differences ?
+Now close the worker `CTRL-C` and add some additional code. Can you spot the difference ?
 
 ```
 /opt/logstash/bin/logstash -e 'input { stdin { } } filter { mutate { gsub => [ "message","DevOpsDays.*","Student" ] } }output { stdout { codec => json } }'
 ``` 
-You will see logstash to respond to that with a message.
+You will see logstash respond to that command with a message.
 
 ```
 Settings: Default pipeline workers: 1
@@ -609,8 +611,8 @@ Pipeline main started
 Hello DevOpsDays AMS2016
 {"message":"Hello Student","@version":"1","@timestamp":"2016-06-25T02:28:36.809Z","host":"datalake.monitor.now"}
 ```
-Last thing I want you to show is the use of conditional support. As with programming languages the if/if else/else can be used with a chosen expression.
-Now first create a directory, for example '*/tmp/example*' and create three files as listed below.
+Final thing I want to demonstrate is the use of conditional support. As with programming languages the if/if else/else can be used with a chosen expression.
+First create a directory, for example '*/tmp/example*' and create three files as listed below.
 
 > Note : Logstash can run code from one file or a directory which we show below. Be aware of the correct naming that input code is always imported first.
 
@@ -644,7 +646,7 @@ output {
 }
 ```
 
-Now start the code by the command below en play with the input [carrot, pizza, beer or other]. Look at the guess field for the response.
+Now start the code with the command below en play with the input [carrot, pizza, beer or other]. Look at the guess field for the response.
 
 ```
 /opt/logstash/bin/logstash -f /tmp/example
@@ -653,13 +655,13 @@ Now start the code by the command below en play with the input [carrot, pizza, b
 <a id="syslog"></a>
 ### 2.2 Connecting the syslog 
 
-Are you ready for the first real job? In this section we will
+Are you ready for the first real job? In this section we will:
 
 - Add the configuration for the '*syslog*' input.
 - Add the main configuration for setting the '*elasticsearch*' output.
 - We will create a `/etc/rsyslog.d/logstash.conf` file to forward all syslog messages.
 - We will now test and see our results in Kibana.
-- At last we will create some basic filters to mask our security (facility 4 & 10) messages.
+- Finally we will create some basic filters to mask our security (facility 4 & 10) messages.
 
 Start with creating the '*input*' file `/etc/logstash/conf.d/000-input.conf` with the content below.
 
@@ -729,7 +731,7 @@ Now the index is shown. You can safely click 'Discover' to search for your event
 
 <img src="https://raw.githubusercontent.com/avwsolutions/DOD-AMS-Workshop/master/content/event1.png" alt="Event1">
 
-As you maybe noticed. The facility type we used is exactly the one we have to mask. This masking can be easily done with an if condition and make use of the '*mutate*' filter.
+As you might already notice. The facility type we used is exactly the one we have to mask. This masking can be easily done with an '*if condition*' and use of the '*mutate*' filter.
 
 Below the example code for setting some helpfull information in large environments and finally masking the field.
 
@@ -758,7 +760,7 @@ filter {
 	}
 }
 ```
-Don't forget to `configtest` and `restart` logstash. Also send five additional messages.
+Don't forget to `configtest` and `restart` logstash. Send five additional messages.
 
 ```
 $ sudo service logstash configtest
@@ -872,11 +874,11 @@ After starting the log-generator open the Kibana Discover dasboard again and sea
 <a id="logperf"></a>
 ### 2.4 Application logging & performance
 
-Now that we have created a configuration for our Tomcat Middleware and had some hands-on experience parsing the grok filter, creating the application log monitoring is quite easy.
+Now that we have created a configuration for Tomcat Middleware and had some hands-on experience parsing the grok filter, creating the application log monitoring is quite easy.
 
-For the performance log we need to do an important thing,before sending the metric to the data lake.
+For the performance log we need to make changes to the data type,before sending the metrics to the data lake.
 
-In short we will do the following things in this section.
+We have to complete the following tasks to complete this section.
 
 - Add the configuration for the '*file*' input.
 - Setup, validate and integrate our required *filters* for application logging.
@@ -944,7 +946,7 @@ Below an sample message in the BankIT-performance.log
 key=2016-06-26 21:40:39.999|value=79|module=claims
 ```
 
-As you can see the key/value pairs are delimited by and underscore '|' and will be parsed out by the '*kv*' filter. As mentioned above all values are parsed out as String, so we have to convert our string to an integer. At last we will do the timestamp trick again.
+As you can see the key/value pairs are delimited by and underscore '|' and will be parsed out by the '*kv*' filter. As mentioned above all values are parsed out as String, so we have to convert our string to an integer. Finally we will do the timestamp trick again.
 
 Below the code that you can use to extend the `/etc/logstash/conf.d/500-filter.conf` configuration.
 
@@ -1145,7 +1147,7 @@ In your previous job you've used Graphite for these tasks. You know about the si
 
 You discussed these new requirements with Kenny, who is the Product Owner. Kenny agreed to add new functionality to the current sprint.
 
-**Below the functional needs:**
+**Below the functional requirements:**
 
 - All System statistics (such as CPU, Memory and storage) must be availabe for dashboarding & reporting.
 - Developers must be able to send their metrics to your Graphite instance.
@@ -1310,7 +1312,7 @@ During the successful sprint demo one of the stakeholders asked about the possib
 You as engineer know that logstash has an input plugin available for Kafka and also Alex want to help you setup some Java workers, which will do the work for '*Producing*' and '*Consuming*' the data.
 At the end of the demo everybody agreed to implement this functionality quickly, because of the launch of a new innovative product called "FinCoach". 
 
-**Below the functional needs:**
+**Below the functional requirements:**
 
 - Kafka must be extended with two additional topics.
 - Logstash Indexer must be extended to consume the event topic.
@@ -1419,7 +1421,7 @@ listeners=PLAINTEXT://localhost:9092
 advertised.listeners=PLAINTEXT://localhost:9092
 ```
 
-At last we can configure the service configuration and start the service. Notice it is using systemd
+We can configure the service configuration and start the service. Notice it is using systemd
 
 ```
 $ sudo systemctl daemon-reload
